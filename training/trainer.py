@@ -54,20 +54,6 @@ from .metrics import (
 from ..data.data_fetcher import DistributedDataFetcher
 from ..data.loaders import create_dataloaders
 
-# try:
-#     from ..data.data_fetcher import DistributedDataFetcher
-#     from ..data.loaders import create_dataloaders
-# except ImportError:
-#     # 절대 임포트로 시도
-#     try:
-#         from DDP_KBIT.data.data_fetcher import DistributedDataFetcher
-#         from DDP_KBIT.data.loaders import create_dataloaders       
-#     except ImportError:
-#         # 직접 임포트로 시도
-#         from data.data_fetcher import DistributedDataFetcher       
-#         from data.loaders import create_dataloaders
-
-
 def main_fn(
     training_config: Dict[str, Any],
     kafka_config: Dict[str, Any],

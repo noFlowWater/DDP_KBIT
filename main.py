@@ -25,24 +25,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 _IMPORTS_SUCCESSFUL = False
 
 try:
-    # 절대 임포트 시도
-    try:
-        from DDP_KBIT.config import training_config,data_config, spark_config
-        from DDP_KBIT.models.networks import create_cnn_model, create_feedforward_model
-        from DDP_KBIT.training.trainer import main_fn
-        from DDP_KBIT.experiments.runner import exp_fn, run_multiple_experiments
-        from DDP_KBIT.utils.spark_utils import create_spark_session, setup_working_directory
-        from DDP_KBIT.utils.visualization import print_statistical_analysis
-        _IMPORTS_SUCCESSFUL = True
-    except ImportError:
-        # 상대 임포트 시도
-        from config import training_config, data_config, spark_config
-        from models.networks import create_cnn_model, create_feedforward_model
-        from training.trainer import main_fn
-        from experiments.runner import exp_fn, run_multiple_experiments
-        from utils.spark_utils import create_spark_session, setup_working_directory
-        from utils.visualization import print_statistical_analysis
-        _IMPORTS_SUCCESSFUL = True
+    from config import training_config, data_config, spark_config
+    from models.networks import create_cnn_model, create_feedforward_model
+    from training.trainer import main_fn
+    from experiments.runner import exp_fn, run_multiple_experiments
+    from utils.spark_utils import create_spark_session, setup_working_directory
+    from utils.visualization import print_statistical_analysis
+    _IMPORTS_SUCCESSFUL = True
 except ImportError as e:
     print(f"Error importing DDP_KBIT modules: {e}")
     print("Please ensure you're running from the correct directory and all dependencies are installed.")

@@ -108,8 +108,8 @@ def run_training_mode(args: argparse.Namespace) -> None:
         result = TorchDistributor(
             num_processes=num_processes,
             local_mode=False,
-            use_gpu=True
-        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=True)
+            use_gpu=train_config["use_gpu"]
+        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=train_config["use_gpu"])
         
         logging.info("Training completed successfully!")
         

@@ -153,7 +153,7 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
                 num_processes=num_processes,
                 local_mode=False,
                 use_gpu=True
-            ).run(run_multiple_experiments, iterations=args.iterations)
+            ).run(run_multiple_experiments, train_config, kafka_config, data_loader_config, iteration_count=args.iterations, use_gpu=True)
             print_statistical_analysis(results)
         else:
             logging.error(f"Unknown experiment type: {args.experiment_type}")

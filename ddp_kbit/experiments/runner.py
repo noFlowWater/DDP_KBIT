@@ -361,10 +361,10 @@ def exp_fn(training_config: Dict[str, Any],
 
 
 def run_multiple_experiments(training_config: Dict[str, Any], 
-                           kafka_config: Dict[str, Any], 
-                           data_loader_config: Dict[str, Any], 
-                           iteration_count: int = 30,
-                           use_gpu: bool = True) -> Dict[str, List[float]]:
+                            kafka_config: Dict[str, Any], 
+                            data_loader_config: Dict[str, Any], 
+                            iteration_count: int = 30,
+                            use_gpu: bool = True) -> Dict[str, List[float]]:
     """
     Run multiple iterations of experiments and collect results.
     

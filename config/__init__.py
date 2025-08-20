@@ -6,17 +6,17 @@ distributed deep learning system, including training parameters, data settings,
 and Spark configuration.
 """
 
-from . import training_config
-from . import data_config
-from . import spark_config
+from DDP_KBIT.config import training_config
+from DDP_KBIT.config import data_config
+from DDP_KBIT.config import spark_config
 
 # Import key configuration functions and classes
-from .training_config import (
+from DDP_KBIT.config.training_config import (
     get_extended_training_config,
     NeuralNetwork
 )
 
-from .data_config import (
+from DDP_KBIT.config.data_config import (
     KAFKA_CONFIG,
     PAYLOAD_CONFIG,
     DATA_LOADER_CONFIG,
@@ -29,7 +29,7 @@ from .data_config import (
     get_data_loader_config_with_topic
 )
 
-from .spark_config import (
+from DDP_KBIT.config.spark_config import (
     SPARK_CONFIG,
     JAR_URLS,
     create_spark_session,

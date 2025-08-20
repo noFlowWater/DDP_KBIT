@@ -11,8 +11,8 @@ import json
 import requests
 import torch
 import torch.distributed as dist
-from .datasets import DistributedDataset
-from .kafka_utils import split_offsets, check_partitions, create_dynamic_url
+from DDP_KBIT.data.datasets import DistributedDataset
+from DDP_KBIT.data.kafka_utils import split_offsets, check_partitions, create_dynamic_url
 
 
 class DistributedDataFetcher:

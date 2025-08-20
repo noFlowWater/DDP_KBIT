@@ -46,13 +46,13 @@ from ignite.engine import Events, create_supervised_trainer, create_supervised_e
 from ignite.metrics import Metric
 
 # Local imports
-from .distributed import initialize_distributed_training, create_distributed_dataloader, cleanup_distributed_training
-from .metrics import (
+from DDP_KBIT.training.distributed import initialize_distributed_training, create_distributed_dataloader, cleanup_distributed_training
+from DDP_KBIT.training.metrics import (
     save_metrics, custom_output_transform, debug_dataloader, 
     TrainingMetricsTracker, PerformanceProfiler
 )
-from ..data.data_fetcher import DistributedDataFetcher
-from ..data.loaders import create_dataloaders
+from DDP_KBIT.data.data_fetcher import DistributedDataFetcher
+from DDP_KBIT.data.loaders import create_dataloaders
 
 def main_fn(
     training_config: Dict[str, Any],

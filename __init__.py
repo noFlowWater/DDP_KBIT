@@ -25,18 +25,18 @@ __author__ = "DDP_KBIT Team"
 __email__ = "ddp_kbit@example.com"
 
 # Import main entry point
-from .main import main
+from DDP_KBIT.main import main
 
 # Import key classes and functions for easy access
 try:
-    from .config import training_config, data_config, spark_config
-    from .models.networks import Net, NeuralNetwork, create_cnn_model, create_feedforward_model
-    from .training.trainer import main_fn
-    from .training.distributed import initialize_distributed_training
-    from .experiments.runner import exp_fn, run_multiple_experiments
-    from .utils.spark_utils import create_spark_session
-    from .utils.checkpoint import load_checkpoint, save_checkpoint
-    from .utils.visualization import calculate_boxplot_stats, plot_training_metrics
+    from DDP_KBIT.config import training_config, data_config, spark_config
+    from DDP_KBIT.models.networks import Net, NeuralNetwork, create_cnn_model, create_feedforward_model
+    from DDP_KBIT.training.trainer import main_fn
+    from DDP_KBIT.training.distributed import initialize_distributed_training
+    from DDP_KBIT.experiments.runner import exp_fn, run_multiple_experiments
+    from DDP_KBIT.utils.spark_utils import create_spark_session
+    from DDP_KBIT.utils.checkpoint import load_checkpoint, save_checkpoint
+    from DDP_KBIT.utils.visualization import calculate_boxplot_stats, plot_training_metrics
     
     # Define what gets imported with "from DDP_KBIT import *"
     __all__ = [

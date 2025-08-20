@@ -9,15 +9,15 @@ This package contains data processing utilities for distributed deep learning:
 - loaders: DataLoader creation utilities for distributed and standard training
 """
 
-from .datasets import (
+from DDP_KBIT.data.datasets import (
     DistributedDataset,
     ProcessedMNISTDataset,
     create_distributed_dataloader
 )
 
-from .data_fetcher import DistributedDataFetcher
+from DDP_KBIT.data.data_fetcher import DistributedDataFetcher
 
-from .transforms import (
+from DDP_KBIT.data.transforms import (
     transform_MNISTData,
     transform_RawMNISTData,
     transform_mongodb_image,
@@ -27,7 +27,7 @@ from .transforms import (
     transform_numpy_to_tensor
 )
 
-from .kafka_utils import (
+from DDP_KBIT.data.kafka_utils import (
     split_offsets,
     validate_split_config,
     parse_offset_data,
@@ -41,7 +41,7 @@ from .kafka_utils import (
     estimate_data_distribution
 )
 
-from .loaders import (
+from DDP_KBIT.data.loaders import (
     create_dataloaders,
     create_simple_dataloader,
     create_distributed_sampler,

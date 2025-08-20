@@ -9,7 +9,7 @@ This module contains utilities for creating PyTorch DataLoader objects:
 import torch
 from torch.utils.data import DataLoader, RandomSampler
 from torch.utils.data.distributed import DistributedSampler
-from DDP_KBIT.data.datasets import ProcessedMNISTDataset
+from ddp_kbit.data.datasets import ProcessedMNISTDataset
 
 
 def create_dataloaders(datasets, batch_size):

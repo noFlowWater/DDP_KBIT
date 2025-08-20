@@ -438,19 +438,19 @@ def create_performance_bar_chart(
         colors = ['skyblue', 'lightgreen', 'salmon', 'gold', 'plum', 'lightgray']
         
         bars = ax.bar(x_pos, means, 
-                     yerr=stds if include_error_bars else None,
-                     capsize=5 if include_error_bars else 0,
-                     color=[colors[i % len(colors)] for i in range(len(labels))],
-                     alpha=0.8,
-                     edgecolor='black',
-                     linewidth=0.5)
+                    yerr=stds if include_error_bars else None,
+                    capsize=5 if include_error_bars else 0,
+                    color=[colors[i % len(colors)] for i in range(len(labels))],
+                    alpha=0.8,
+                    edgecolor='black',
+                    linewidth=0.5)
         
         # Add value labels on top of bars
         for i, (bar, mean) in enumerate(zip(bars, means)):
             height = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2., height + (stds[i] if include_error_bars else 0),
-                   f'{mean:.3f}',
-                   ha='center', va='bottom', fontsize=10)
+                    f'{mean:.3f}',
+                    ha='center', va='bottom', fontsize=10)
         
         ax.set_title(title, fontsize=16)
         ax.set_ylabel(ylabel, fontsize=12)

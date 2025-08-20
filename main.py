@@ -100,8 +100,13 @@ def run_training_mode(args: argparse.Namespace) -> None:
         if args.distributed:
             initialize_distributed_training()
         
+        # Get configurations
+        train_config = training_config.get_complete_training_config()
+        kafka_config = data_config.KAFKA_CONFIG
+        data_loader_config = data_config.DATA_LOADER_CONFIG
+        
         # Run the main training function
-        main_fn()
+        main_fn(train_config, kafka_config, data_loader_config)
         
         logging.info("Training completed successfully!")
         

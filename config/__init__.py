@@ -17,7 +17,6 @@ from .training_config import (
 )
 
 from .data_config import (
-    get_kafka_config,
     get_payload_config,
     get_data_loader_config,
     get_mongo_config,
@@ -45,7 +44,6 @@ __all__ = [
     'NeuralNetwork',
     
     # Data configuration
-    'get_kafka_config',
     'get_payload_config',
     'get_data_loader_config',
     'get_mongo_config',

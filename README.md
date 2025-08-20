@@ -85,12 +85,6 @@ python DDP_KBIT/main.py --mode experiment --experiment_type single
 python DDP_KBIT/main.py --mode experiment --experiment_type multiple --iterations 10
 ```
 
-### 4. Performance Benchmarking
-```bash
-# Run benchmarks
-python DDP_KBIT/main.py --mode benchmark --iterations 5
-```
-
 ## 🔧 Configuration
 
 ### Training Configuration
@@ -310,7 +304,6 @@ spark = create_spark_session(
 
 ### Configuration Functions
 - `get_training_config()`: Get training hyperparameters
-- `get_kafka_config()`: Get Kafka connection settings
 - `get_spark_config()`: Get Spark session configuration
 
 ### Utility Functions

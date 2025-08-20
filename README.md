@@ -258,11 +258,7 @@ from DDP_KBIT.utils import create_spark_session
 
 # Custom Spark configuration
 spark = create_spark_session(
-    app_name="Custom_App",
-    config_overrides={
-        "spark.executor.memory": "8g",
-        "spark.executor.cores": "4"
-    }
+    app_name="Custom_App"
 )
 ```
 

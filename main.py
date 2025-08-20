@@ -93,7 +93,6 @@ def run_training_mode(args: argparse.Namespace) -> None:
     # Create Spark session
     spark = create_spark_session(
         app_name="DDP_KBIT_Training",
-        config_overrides=external_config.get('spark_config', {})
     )
     
     try:
@@ -131,7 +130,6 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
     # Create Spark session
     spark = create_spark_session(
         app_name="DDP_KBIT_Experiments",
-        config_overrides=external_config.get('spark_config', {})
     )
     
     try:

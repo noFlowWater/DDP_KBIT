@@ -4,7 +4,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="ddp-kbit",
+    name="DDP_KBIT",
     version="0.1.0",
     description="Distributed Deep Learning System with K-Bit compression",
     author="KBIT Team",
@@ -46,6 +46,7 @@ setup(
     entry_points={
         "console_scripts": [
             "ddp-kbit=DDP_KBIT.main:main",
+            "DDP_KBIT=DDP_KBIT.main:main",
         ],
     },
     classifiers=[

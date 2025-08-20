@@ -28,6 +28,8 @@ cd DDP_KBIT
 pip install -e .
 ```
 
+**⚠️ 중요**: 패키지 이름은 `DDP_KBIT`입니다 (대문자). `ddp_kbit`가 아닙니다.
+
 ### Install Dependencies Only
 ```bash
 # Install all required dependencies
@@ -44,6 +46,9 @@ python -c "import DDP_KBIT; print('DDP_KBIT installed successfully!')"
 
 # Check available command line tools
 ddp-kbit --help
+
+# Run comprehensive installation test
+python install_test.py
 ```
 
 ## 🎯 Quick Start
@@ -292,6 +297,8 @@ checkpoint = load_checkpoint("model_v1")
    - Ensure package is installed correctly: `pip install -e .`
    - Check Python path and working directory
    - Verify all dependencies are installed: `pip install -r requirements.txt`
+   - **Important**: Use `import DDP_KBIT` (uppercase), not `import ddp_kbit`
+   - Run `python install_test.py` for comprehensive testing
 
 ### Logging
 Enable debug logging for detailed information:

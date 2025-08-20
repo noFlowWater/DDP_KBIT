@@ -13,7 +13,6 @@ from . import spark_config
 # Import key configuration functions and classes
 from .training_config import (
     get_extended_training_config,
-    batch_size_experiments,
     NeuralNetwork
 )
 

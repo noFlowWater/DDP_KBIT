@@ -126,6 +126,7 @@ def create_spark_session(
         # Create the session
         spark = builder.getOrCreate()
         
+        
         # Configure logging
         configure_spark_logging(spark)
         
@@ -152,6 +153,11 @@ def configure_spark_logging(spark: SparkSession) -> None:
     # Set Spark context log level
     sc = spark.sparkContext
     sc.setLogLevel("ERROR")
+    
+    print("Current Spark configuration:")
+    for key, value in sorted(sc._conf.getAll(), key=lambda x: x[0]):
+        print(f"{key} = {value}")
+    
 
 
 def check_kafka_partitions(broker_address: List[str], topic: str) -> bool:

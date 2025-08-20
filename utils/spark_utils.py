@@ -13,6 +13,7 @@ from typing import Dict, Any, Optional, List
 from pyspark.sql import SparkSession
 from pyspark.context import SparkContext
 from pyspark.conf import SparkConf
+from DDP_KBIT.config import spark_config
 
 
 def get_first_ip() -> str:
@@ -61,9 +62,9 @@ def load_config(config_path: str = "config.json") -> Dict[str, Any]:
 def create_spark_session(
     app_name: str = "SparkDL_KBIT",
     master_url: str = "spark://spark-master-service:7077",
-    config_path: str = "config.json",
+    external_config_path: str = "config.json",
     driver_port: str = "39337",
-    custom_configs: Optional[Dict[str, Any]] = None
+    spark_config: Dict[str, Any] = spark_config.SPARK_CONFIG
 ) -> SparkSession:
     """
     Create and configure a Spark session for distributed deep learning with GPU support.
@@ -71,9 +72,9 @@ def create_spark_session(
     Args:
         app_name (str): Name of the Spark application. Defaults to "SparkDL_KBIT".
         master_url (str): Spark master URL. Defaults to "spark://spark-master-service:7077".
-        config_path (str): Path to configuration file. Defaults to "config.json".
+        external_config_path (str): Path to configuration file. Defaults to "config.json".
         driver_port (str): Driver port for Spark. Defaults to "39337".
-        custom_configs (Optional[Dict[str, Any]]): Additional custom configurations.
+        spark_config (Dict[str, Any]): Additional custom configurations.
     
     Returns:
         SparkSession: Configured Spark session.
@@ -83,11 +84,11 @@ def create_spark_session(
     """
     try:
         # Load configuration
-        config = load_config(config_path)
+        external_config = load_config(external_config_path)
         
         # Extract configuration values
-        jar_urls = ",".join(config["KAFKA_JAR_URLS"])
-        repartition_num = config["NUM_EXECUTORS"] * config["EXECUTOR_CORES"] * 2
+        jar_urls = ",".join(external_config["KAFKA_JAR_URLS"])
+        repartition_num = external_config["NUM_EXECUTORS"] * external_config["EXECUTOR_CORES"] * 2
         
         # Get driver host IP
         driver_host = get_first_ip()
@@ -104,10 +105,10 @@ def create_spark_session(
             .config("spark.submit.pyFiles", "mnist_pb2.py")
             .config("spark.jars", jar_urls)
             # Executor Configuration
-            .config("spark.executor.instances", config.get("NUM_EXECUTORS", 3))
-            .config("spark.executor.cores", config.get("EXECUTOR_CORES", 5))
-            .config("spark.executor.memory", config.get("EXECUTOR_MEMORY", "24g"))
-            .config("spark.executor.resource.gpu.amount", config.get("EXECUTOR_GPU_AMOUNT", 1))
+            .config("spark.executor.instances", external_config.get("NUM_EXECUTORS", 3))
+            .config("spark.executor.cores", external_config.get("EXECUTOR_CORES", 5))
+            .config("spark.executor.memory", external_config.get("EXECUTOR_MEMORY", "24g"))
+            .config("spark.executor.resource.gpu.amount", external_config.get("EXECUTOR_GPU_AMOUNT", 1))
             # GPU and Task Configuration
             .config("spark.task.resource.gpu.amount", 1)
             .config("spark.rapids.sql.concurrentGpuTasks", 1)
@@ -119,8 +120,8 @@ def create_spark_session(
         )
         
         # Apply custom configurations if provided
-        if custom_configs:
-            for key, value in custom_configs.items():
+        if spark_config:
+            for key, value in spark_config.items():
                 builder = builder.config(key, value)
         
         # Create the session
@@ -153,7 +154,7 @@ def configure_spark_logging(spark: SparkSession) -> None:
     # Set Spark context log level
     sc = spark.sparkContext
     sc.setLogLevel("ERROR")
-    
+
     print("Current Spark configuration:")
     for key, value in sorted(sc._conf.getAll(), key=lambda x: x[0]):
         print(f"{key} = {value}")

@@ -315,8 +315,6 @@ Examples:
             run_training_mode(args)
         elif args.mode == "experiment":
             run_experiment_mode(args)
-        elif args.mode == "benchmark":
-            run_benchmark_mode(args)
             
     except KeyboardInterrupt:
         logging.info("Execution interrupted by user")

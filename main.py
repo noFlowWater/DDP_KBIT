@@ -30,7 +30,6 @@ try:
         from DDP_KBIT.config import training_config,data_config, spark_config
         from DDP_KBIT.models.networks import create_cnn_model, create_feedforward_model
         from DDP_KBIT.training.trainer import main_fn
-        from DDP_KBIT.training.distributed import initialize_distributed_training
         from DDP_KBIT.experiments.runner import exp_fn, run_multiple_experiments
         from DDP_KBIT.utils.spark_utils import create_spark_session, setup_working_directory
         from DDP_KBIT.utils.visualization import print_statistical_analysis
@@ -40,7 +39,6 @@ try:
         from config import training_config, data_config, spark_config
         from models.networks import create_cnn_model, create_feedforward_model
         from training.trainer import main_fn
-        from training.distributed import initialize_distributed_training
         from experiments.runner import exp_fn, run_multiple_experiments
         from utils.spark_utils import create_spark_session, setup_working_directory
         from utils.visualization import print_statistical_analysis
@@ -96,17 +94,22 @@ def run_training_mode(args: argparse.Namespace) -> None:
     )
     
     try:
-        # Initialize distributed training if required
-        if args.distributed:
-            initialize_distributed_training()
+        from pyspark.ml.torch.distributor import TorchDistributor
         
         # Get configurations
         train_config = training_config.get_complete_training_config()
         kafka_config = data_config.KAFKA_CONFIG
         data_loader_config = data_config.DATA_LOADER_CONFIG
         
-        # Run the main training function
-        main_fn(train_config, kafka_config, data_loader_config)
+        # Get number of processes from Spark configuration
+        num_processes = int(spark.conf.get("spark.executor.instances"))
+        
+        # Run the main training function using TorchDistributor
+        result = TorchDistributor(
+            num_processes=num_processes,
+            local_mode=False,
+            use_gpu=True
+        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=True)
         
         logging.info("Training completed successfully!")
         
@@ -138,12 +141,30 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
     )
     
     try:
+        from pyspark.ml.torch.distributor import TorchDistributor
+        
+        # Get configurations
+        train_config = training_config.get_complete_training_config()
+        kafka_config = data_config.KAFKA_CONFIG
+        data_loader_config = data_config.DATA_LOADER_CONFIG
+        
+        # Get number of processes from Spark configuration
+        num_processes = int(spark.conf.get("spark.executor.instances"))
+        
         if args.experiment_type == "single":
-            # Run single experiment
-            exp_fn()
+            # Run single experiment using TorchDistributor
+            result = TorchDistributor(
+                num_processes=num_processes,
+                local_mode=False,
+                use_gpu=True
+            ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=True)
         elif args.experiment_type == "multiple":
-            # Run multiple iterations
-            results = run_multiple_experiments(iterations=args.iterations)
+            # Run multiple iterations using TorchDistributor
+            results = TorchDistributor(
+                num_processes=num_processes,
+                local_mode=False,
+                use_gpu=True
+            ).run(run_multiple_experiments, iterations=args.iterations)
             print_statistical_analysis(results)
         else:
             logging.error(f"Unknown experiment type: {args.experiment_type}")

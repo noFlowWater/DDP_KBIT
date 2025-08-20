@@ -48,6 +48,7 @@ TRAINING_CONFIG = {
     "perform_validation": True,  # 검증을 수행하려면 True, 그렇지 않으면 False
     "num_epochs": 1,
     "batch_size": 32,
+    "use_gpu": True,
 }
 
 # Metrics Configuration
@@ -76,6 +77,7 @@ TRAINING_CONFIG_EXTENDED = {
     "perform_validation": True,
     "num_epochs": 30,
     "batch_size": 128,
+    "use_gpu": True,
 }
 
 # Batch size configurations for experiments

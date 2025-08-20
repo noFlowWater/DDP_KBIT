@@ -219,3 +219,6 @@ Thumbs.db
 *.p12
 credentials.json
 secrets.json
+
+
+notebook_interface.ipynb

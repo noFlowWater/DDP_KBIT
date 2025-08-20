@@ -21,6 +21,9 @@ from typing import Dict, Any, Optional
 # Add the current directory to the Python path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# 임포트 시도
+_IMPORTS_SUCCESSFUL = False
+
 try:
     # 절대 임포트 시도
     try:
@@ -31,6 +34,7 @@ try:
         from DDP_KBIT.experiments.runner import exp_fn, run_multiple_experiments
         from DDP_KBIT.utils.spark_utils import create_spark_session, setup_working_directory
         from DDP_KBIT.utils.visualization import print_statistical_analysis
+        _IMPORTS_SUCCESSFUL = True
     except ImportError:
         # 상대 임포트 시도
         from config import training_config, data_config, spark_config
@@ -40,10 +44,15 @@ try:
         from experiments.runner import exp_fn, run_multiple_experiments
         from utils.spark_utils import create_spark_session, setup_working_directory
         from utils.visualization import print_statistical_analysis
+        _IMPORTS_SUCCESSFUL = True
 except ImportError as e:
     print(f"Error importing DDP_KBIT modules: {e}")
     print("Please ensure you're running from the correct directory and all dependencies are installed.")
-    raise ImportError(f"Failed to import DDP_KBIT modules: {e}")
+    
+    # 노트북 환경에서는 ImportError를 raise하지 않고 warning만 출력
+    import warnings
+    warnings.warn(f"Failed to import some DDP_KBIT modules: {e}")
+    _IMPORTS_SUCCESSFUL = False
 
 
 def setup_logging(log_level: str = "INFO") -> None:
@@ -69,6 +78,10 @@ def load_external_config(config_path: Optional[str]) -> Dict[str, Any]:
 
 def run_training_mode(args: argparse.Namespace) -> None:
     """Run training mode using the main_fn from the original notebook."""
+    if not _IMPORTS_SUCCESSFUL:
+        print("❌ Training mode not available - missing dependencies")
+        return
+        
     logging.info("Starting training mode...")
     
     # Load external configuration if provided
@@ -103,6 +116,10 @@ def run_training_mode(args: argparse.Namespace) -> None:
 
 def run_experiment_mode(args: argparse.Namespace) -> None:
     """Run experiment mode using the exp_fn from the original notebook."""
+    if not _IMPORTS_SUCCESSFUL:
+        print("❌ Experiment mode not available - missing dependencies")
+        return
+        
     logging.info(f"Starting experiment mode: {args.experiment_type}")
     
     # Load external configuration if provided
@@ -140,6 +157,10 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
 
 def create_sample_config() -> None:
     """Create a sample configuration file using existing config modules dynamically."""
+    if not _IMPORTS_SUCCESSFUL:
+        print("❌ Create sample config not available - missing dependencies")
+        return
+        
     # Import configuration constants and functions
     from config.training_config import get_complete_training_config
     from config.data_config import KAFKA_CONFIG, MONGO_CONFIG, DATA_LOADER_CONFIG, PAYLOAD_CONFIG

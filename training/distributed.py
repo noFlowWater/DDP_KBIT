@@ -395,3 +395,37 @@ class DistributedTrainingConfig:
             'timeout': self.timeout,
             'find_unused_parameters': self.find_unused_parameters
         }
+
+
+def is_distributed_available() -> bool:
+    """
+    Check if distributed training is available and properly configured.
+    
+    Returns:
+        bool: True if distributed training is available, False otherwise.
+    """
+    return torch.distributed.is_available() and validate_distributed_environment()
+
+
+def get_rank() -> int:
+    """
+    Get the rank of the current process in distributed training.
+    
+    Returns:
+        int: Current process rank, or 0 if not in distributed mode.
+    """
+    if torch.distributed.is_initialized():
+        return torch.distributed.get_rank()
+    return 0
+
+
+def get_world_size() -> int:
+    """
+    Get the total number of processes in distributed training.
+    
+    Returns:
+        int: Total number of processes, or 1 if not in distributed mode.
+    """
+    if torch.distributed.is_initialized():
+        return torch.distributed.get_world_size()
+    return 1

@@ -6,9 +6,9 @@ distributed deep learning system, including distributed training setup,
 metrics tracking, and the main training orchestration.
 """
 
-from DDP_KBIT.training.trainer import main_fn, TrainingConfig, DataLoaderConfig
+from ddp_kbit.training.trainer import main_fn, TrainingConfig, DataLoaderConfig
 
-from DDP_KBIT.training.distributed import (
+from ddp_kbit.training.distributed import (
     initialize_distributed_training,
     cleanup_distributed_training,
     DistributedTrainingConfig,
@@ -16,7 +16,7 @@ from DDP_KBIT.training.distributed import (
     get_rank,
     get_world_size
 )
-from DDP_KBIT.training.metrics import (
+from ddp_kbit.training.metrics import (
     reduce_dict,
     save_metrics,
     debug_dataloader,

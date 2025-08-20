@@ -6,7 +6,7 @@ model checkpointing, and visualization for the DDP_KBIT distributed
 deep learning system.
 """
 
-from DDP_KBIT.utils.spark_utils import (
+from ddp_kbit.utils.spark_utils import (
     get_first_ip,
     load_config,
     create_spark_session,
@@ -16,14 +16,14 @@ from DDP_KBIT.utils.spark_utils import (
     setup_working_directory,
     initialize_distributed_training
 )
-from DDP_KBIT.utils.checkpoint import (
+from ddp_kbit.utils.checkpoint import (
     load_checkpoint,
     save_checkpoint,
     list_available_checkpoints,
     cleanup_old_checkpoints,
     get_checkpoint_info
 )
-from DDP_KBIT.utils.visualization import (
+from ddp_kbit.utils.visualization import (
     calculate_boxplot_stats,
     print_statistical_analysis,
     plot_training_metrics,

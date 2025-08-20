@@ -5,7 +5,7 @@ This module contains neural network model definitions and related utilities
 for the DDP_KBIT distributed deep learning system.
 """
 
-from DDP_KBIT.models.networks import (
+from ddp_kbit.models.networks import (
     Net,
     NeuralNetwork,
     create_cnn_model,

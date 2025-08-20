@@ -42,8 +42,8 @@ try:
         from utils.visualization import print_statistical_analysis
 except ImportError as e:
     print(f"Error importing DDP_KBIT modules: {e}")
-    print("Please ensure you're running from the correct  directory and all dependencies are installed.")
-    sys.exit(1)
+    print("Please ensure you're running from the correct directory and all dependencies are installed.")
+    raise ImportError(f"Failed to import DDP_KBIT modules: {e}")
 
 
 def setup_logging(log_level: str = "INFO") -> None:

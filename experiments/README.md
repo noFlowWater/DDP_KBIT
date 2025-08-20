@@ -16,7 +16,6 @@ Contains the main experiment runner logic including:
 Contains performance measurement and statistical analysis utilities:
 - `calculate_boxplot_stats()`: Statistical analysis with boxplot metrics
 - `PerformanceTimer`: Context manager for timing operations  
-- `BenchmarkSuite`: Comprehensive benchmarking suite
 - Visualization and reporting functions
 - Data export/import capabilities
 
@@ -54,38 +53,6 @@ results = run_multiple_experiments(
     iteration_count=30,
     use_gpu=True
 )
-```
-
-### Performance Analysis
-
-```python
-from DDP_KBIT.experiments.benchmarks import BenchmarkSuite, analyze_experiment_results
-
-# Create benchmark suite
-suite = BenchmarkSuite("Data Loading Performance Test")
-
-# Add results from experiments
-sample_results = {
-    "avro_lz4": [1.23, 1.45, 1.12, 1.67, 1.34],
-    "avro_none": [2.34, 2.12, 2.45, 2.67, 2.23],
-    "json_lz4": [1.89, 1.67, 1.98, 2.12, 1.87], 
-    "json_none": [3.45, 3.23, 3.67, 3.89, 3.34]
-}
-
-for exp_name, times in sample_results.items():
-    suite.add_results(exp_name, times)
-
-# Run statistical analysis
-analysis = suite.run_analysis()
-
-# Generate performance comparison
-comparison = suite.generate_comparison()
-
-# Create visualizations
-suite.create_visualizations(save_dir="./experiment_results")
-
-# Export results
-suite.export_results("experiment_results.json")
 ```
 
 ### Using Performance Timer

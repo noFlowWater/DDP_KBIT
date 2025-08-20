@@ -183,17 +183,6 @@ exp_fn()
 results = run_multiple_experiments(iterations=10)
 ```
 
-### Benchmarking Suite
-```python
-from DDP_KBIT.experiments import BenchmarkSuite
-
-# Create benchmark suite
-suite = BenchmarkSuite(name="Performance_Test")
-
-# Add results and analyze
-suite.add_result("experiment_1", {"accuracy": 0.95, "time": 120.5})
-suite.save_to_json("benchmark_results.json")
-```
 
 ## 🔍 Monitoring and Visualization
 

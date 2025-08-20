@@ -14,7 +14,6 @@ from .runner import (
 from .benchmarks import (
     calculate_boxplot_stats,
     PerformanceTimer,
-    BenchmarkSuite
 )
 
 __all__ = [
@@ -27,5 +26,4 @@ __all__ = [
     # Benchmarking
     'calculate_boxplot_stats',
     'PerformanceTimer',
-    'BenchmarkSuite',
 ]

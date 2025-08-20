@@ -12,7 +12,6 @@ from . import spark_config
 
 # Import key configuration functions and classes
 from .training_config import (
-    get_training_config,
     get_extended_training_config,
     batch_size_experiments,
     NeuralNetwork
@@ -43,9 +42,7 @@ __all__ = [
     'spark_config',
     
     # Training configuration
-    'get_training_config',
     'get_extended_training_config',
-    'batch_size_experiments',
     'NeuralNetwork',
     
     # Data configuration

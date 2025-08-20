@@ -24,7 +24,7 @@ Contains performance measurement and statistical analysis utilities:
 ### Running a Single Experiment
 
 ```python
-from DDP_KBIT.experiments import exp_fn, EXAMPLE_TRAINING_CONFIG, EXAMPLE_KAFKA_CONFIG, EXAMPLE_DATA_LOADER_CONFIG
+from ddp_kbit.experiments import exp_fn, EXAMPLE_TRAINING_CONFIG, EXAMPLE_KAFKA_CONFIG, EXAMPLE_DATA_LOADER_CONFIG
 from pyspark.ml.torch.distributor import TorchDistributor
 
 # Run experiment through TorchDistributor
@@ -43,7 +43,7 @@ print("Experiment Results:", results)
 ### Running Multiple Iterations
 
 ```python
-from DDP_KBIT.experiments import run_multiple_experiments
+from ddp_kbit.experiments import run_multiple_experiments
 
 # Run 30 iterations of experiments
 results = run_multiple_experiments(
@@ -58,7 +58,7 @@ results = run_multiple_experiments(
 ### Using Performance Timer
 
 ```python
-from DDP_KBIT.experiments.benchmarks import PerformanceTimer, time_operation
+from ddp_kbit.experiments.benchmarks import PerformanceTimer, time_operation
 
 # Using context manager
 with PerformanceTimer("Data Loading") as timer:

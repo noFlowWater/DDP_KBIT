@@ -443,7 +443,7 @@ def save_results_to_file(results: Dict[str, List[float]],
             'timestamp': datetime.now().isoformat(),
             'total_experiments': len(results),
             'total_data_points': sum(len(v) for v in results.values() if v),
-            'generated_by': 'DDP_KBIT.experiments.benchmarks'
+            'generated_by': 'ddp_kbit.experiments.benchmarks'
         }
     
     os.makedirs(os.path.dirname(filepath), exist_ok=True)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-DDP_KBIT Main Entry Point
+ddp_kbit Main Entry Point
 
-This is the main entry point for the DDP_KBIT distributed deep learning system.
+This is the main entry point for the ddp_kbit distributed deep learning system.
 It provides a command-line interface to run various experiments and training tasks
 extracted from the sparkDL_KBIT_gpu_lightning.ipynb notebook.
 
@@ -33,12 +33,12 @@ try:
     from utils.visualization import print_statistical_analysis
     _IMPORTS_SUCCESSFUL = True
 except ImportError as e:
-    print(f"Error importing DDP_KBIT modules: {e}")
+    print(f"Error importing ddp_kbit modules: {e}")
     print("Please ensure you're running from the correct directory and all dependencies are installed.")
     
     # 노트북 환경에서는 ImportError를 raise하지 않고 warning만 출력
     import warnings
-    warnings.warn(f"Failed to import some DDP_KBIT modules: {e}")
+    warnings.warn(f"Failed to import some ddp_kbit modules: {e}")
     _IMPORTS_SUCCESSFUL = False
 
 
@@ -216,7 +216,7 @@ def create_sample_config() -> None:
     sample_config = {
         # "spark_config": {
         #     "master": "local[*]",  # Override for local development
-        #     "app_name": "DDP_KBIT_Sample",
+        #     "app_name": "ddp_kbit_Sample",
         #     "executor_instances": 2,  # Reduced for sample
         #     "executor_cores": 2,      # Reduced for sample  
         #     "executor_memory": "4g",  # Reduced for sample
@@ -231,7 +231,7 @@ def create_sample_config() -> None:
         "data_loader_config": serializable_data_loader_config,
         "payload_config": serializable_payload_config,
         "metadata": {
-            "generated_from": "DDP_KBIT.config modules",
+            "generated_from": "ddp_kbit.config modules",
             "description": "Sample configuration dynamically generated from existing config modules",
             "usage_note": "This config uses the same settings as defined in the original notebook cell 24"
         }
@@ -246,7 +246,7 @@ def create_sample_config() -> None:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="DDP_KBIT Distributed Deep Learning System",
+        description="ddp_kbit Distributed Deep Learning System",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -318,7 +318,7 @@ Examples:
     
     # Log startup information
     logging.info("="*60)
-    logging.info("DDP_KBIT Distributed Deep Learning System")
+    logging.info("ddp_kbit Distributed Deep Learning System")
     logging.info("="*60)
     logging.info(f"Mode: {args.mode}")
     logging.info(f"Config path: {args.config_path}")

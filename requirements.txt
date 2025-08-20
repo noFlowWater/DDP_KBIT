@@ -1,5 +1,5 @@
 # Core package
-DDP_KBIT
+ddp_kbit
 
 # Deep Learning
 torch>=2.4.0

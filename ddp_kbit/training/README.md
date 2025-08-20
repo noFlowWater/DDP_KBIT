@@ -1,11 +1,11 @@
-# DDP_KBIT Training Module
+# ddp_kbit Training Module
 
 This module contains extracted training-related functionality from the original `sparkDL_KBIT_gpu_lightning.ipynb` notebook, organized into three standalone Python modules with comprehensive documentation and error handling.
 
 ## Module Structure
 
 ```
-DDP_KBIT/training/
+ddp_kbit/training/
 ├── __init__.py          # Package initialization and exports
 ├── distributed.py       # Distributed training utilities
 ├── metrics.py          # Training metrics and evaluation
@@ -73,7 +73,7 @@ DDP_KBIT/training/
 ### Basic Usage
 
 ```python
-from DDP_KBIT.training import main_fn, create_simple_training_config, create_local_data_config
+from ddp_kbit.training import main_fn, create_simple_training_config, create_local_data_config
 import torch.nn as nn
 
 # Create a simple model
@@ -107,7 +107,7 @@ results = main_fn(
 ### Advanced Configuration
 
 ```python
-from DDP_KBIT.training import main_fn, TrainingConfig, DataLoaderConfig
+from ddp_kbit.training import main_fn, TrainingConfig, DataLoaderConfig
 from ignite.metrics import Loss, Accuracy
 import torch
 
@@ -149,7 +149,7 @@ results = main_fn(training_config, {}, data_loader_config, use_gpu=True)
 ### Metrics Tracking
 
 ```python
-from DDP_KBIT.training import TrainingMetricsTracker
+from ddp_kbit.training import TrainingMetricsTracker
 
 # Create metrics tracker
 tracker = TrainingMetricsTracker()
@@ -176,7 +176,7 @@ tracker.print_summary(rank=0)
 ### Distributed Environment Setup
 
 ```python
-from DDP_KBIT.training import initialize_distributed_training, validate_distributed_environment
+from ddp_kbit.training import initialize_distributed_training, validate_distributed_environment
 
 # Validate environment
 if validate_distributed_environment():

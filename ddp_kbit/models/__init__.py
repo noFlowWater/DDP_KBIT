@@ -1,8 +1,8 @@
 """
-Models Module for DDP_KBIT
+Models Module for ddp_kbit
 
 This module contains neural network model definitions and related utilities
-for the DDP_KBIT distributed deep learning system.
+for the ddp_kbit distributed deep learning system.
 """
 
 from ddp_kbit.models.networks import (

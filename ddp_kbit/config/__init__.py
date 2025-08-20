@@ -1,7 +1,7 @@
 """
-Configuration Module for DDP_KBIT
+Configuration Module for ddp_kbit
 
-This module contains all configuration-related functionality for the DDP_KBIT
+This module contains all configuration-related functionality for the ddp_kbit
 distributed deep learning system, including training parameters, data settings,
 and Spark configuration.
 """

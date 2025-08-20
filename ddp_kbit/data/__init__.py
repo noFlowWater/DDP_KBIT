@@ -1,5 +1,5 @@
 """
-DDP_KBIT Data Module
+ddp_kbit Data Module
 
 This package contains data processing utilities for distributed deep learning:
 - datasets: Dataset classes for distributed Kafka consumption and MNIST data

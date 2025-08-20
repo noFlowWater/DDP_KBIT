@@ -1,7 +1,7 @@
 """
-Training Module for DDP_KBIT
+Training Module for ddp_kbit
 
-This module contains training-related functionality for the DDP_KBIT
+This module contains training-related functionality for the ddp_kbit
 distributed deep learning system, including distributed training setup,
 metrics tracking, and the main training orchestration.
 """

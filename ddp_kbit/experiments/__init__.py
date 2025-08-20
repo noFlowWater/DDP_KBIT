@@ -1,8 +1,8 @@
 """
-Experiments Module for DDP_KBIT
+Experiments Module for ddp_kbit
 
 This module contains experiment orchestration and benchmarking functionality
-for the DDP_KBIT distributed deep learning system.
+for the ddp_kbit distributed deep learning system.
 """
 
 from ddp_kbit.experiments.runner import (

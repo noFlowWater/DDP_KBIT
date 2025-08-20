@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Setup script for DDP_KBIT package."""
+"""Setup script for ddp_kbit package."""
 
 from setuptools import setup, find_packages
 

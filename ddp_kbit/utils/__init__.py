@@ -1,8 +1,8 @@
 """
-Utils Module for DDP_KBIT
+Utils Module for ddp_kbit
 
 This module contains utility functions for Spark session management,
-model checkpointing, and visualization for the DDP_KBIT distributed
+model checkpointing, and visualization for the ddp_kbit distributed
 deep learning system.
 """
 

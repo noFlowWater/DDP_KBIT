@@ -162,7 +162,7 @@ def create_distributed_dataloader(
     """
     from torch.utils.data import DataLoader, DistributedSampler
     # Import ProcessedMNISTDataset from the data module
-    from DDP_KBIT.data.datasets import ProcessedMNISTDataset
+    from ddp_kbit.data.datasets import ProcessedMNISTDataset
     
     print(f"Rank {rank}: Creating distributed data loaders...")
     

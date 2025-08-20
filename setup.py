@@ -45,7 +45,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "ddp-kbit=main:main",
+            "ddp-kbit=DDP_KBIT.main:main",
         ],
     },
     classifiers=[

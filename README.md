@@ -11,37 +11,50 @@ A modular distributed deep learning system extracted from `sparkDL_KBIT_gpu_ligh
 - **Performance Benchmarking**: Comprehensive experiment tracking and analysis
 - **Modular Architecture**: Clean, maintainable code structure
 
-## 📋 Requirements
+## 📦 Installation
 
+### Prerequisites
 - Python 3.8+
-- PyTorch 1.9+
-- PySpark 3.2+
-- Apache Kafka
 - CUDA-enabled GPU (optional, for GPU acceleration)
+- Apache Kafka (for data streaming features)
 
-### Dependencies
+### Install from Source
 ```bash
-pip install torch torchvision pyspark kafka-python ignite matplotlib numpy pandas pillow avro-python3
+# Clone the repository
+git clone <repository-url>
+cd DDP_KBIT
+
+# Install the package
+pip install -e .
 ```
 
-## 📁 Project Structure
+### Install Dependencies Only
+```bash
+# Install all required dependencies
+pip install -r requirements.txt
 
+# Or install with extras for development and notebook support
+pip install -r requirements.txt[dev,notebook]
 ```
-DDP_KBIT/
-├── config/          # Configuration modules
-├── data/            # Data handling and Kafka utilities
-├── models/          # Neural network definitions
-├── training/        # Distributed training logic
-├── experiments/     # Experiment orchestration
-├── utils/           # Utility functions
-└── main.py          # CLI entry point
+
+### Verify Installation
+```bash
+# Check if package is installed correctly
+python -c "import DDP_KBIT; print('DDP_KBIT installed successfully!')"
+
+# Check available command line tools
+ddp-kbit --help
 ```
 
 ## 🎯 Quick Start
 
 ### 1. Generate Sample Configuration
 ```bash
-python DDP_KBIT/main.py --create_sample_config
+# Using the command line tool
+ddp-kbit --create_sample_config
+
+# Or using Python directly
+python -m DDP_KBIT.main --create_sample_config
 ```
 
 This creates `sample_config.json` with default settings:
@@ -70,19 +83,68 @@ This creates `sample_config.json` with default settings:
 ### 2. Run Training
 ```bash
 # Single node training
-python DDP_KBIT/main.py --mode train --config_path sample_config.json
+ddp-kbit --mode train --config_path sample_config.json
 
 # Distributed training
-python DDP_KBIT/main.py --mode train --distributed --config_path sample_config.json
+ddp-kbit --mode train --distributed --config_path sample_config.json
+
+# Using Python module directly
+python -m DDP_KBIT.main --mode train --config_path sample_config.json
 ```
 
 ### 3. Run Experiments
 ```bash
 # Single experiment
-python DDP_KBIT/main.py --mode experiment --experiment_type single
+ddp-kbit --mode experiment --experiment_type single
 
 # Multiple iterations with statistical analysis
-python DDP_KBIT/main.py --mode experiment --experiment_type multiple --iterations 10
+ddp-kbit --mode experiment --experiment_type multiple --iterations 10
+
+# Using Python module directly
+python -m DDP_KBIT.main --mode experiment --experiment_type multiple --iterations 10
+```
+
+## 📚 Usage Examples
+
+### Python Script Usage
+```python
+from DDP_KBIT.main import run_training_mode, run_experiment_mode
+from DDP_KBIT.config import training_config, data_config, spark_config
+
+# Run training programmatically
+run_training_mode(None)  # Uses default configuration
+
+# Run experiments
+run_experiment_mode(None)  # Uses default configuration
+```
+
+### Jupyter Notebook Usage
+```python
+# Import the notebook interface
+from DDP_KBIT.notebook_interface import setup_module_path, run_training_mode
+
+# Setup module path
+setup_module_path()
+
+# Run training
+run_training_mode(None)
+```
+
+### Command Line Interface
+```bash
+# Show help
+ddp-kbit --help
+
+# Available modes
+ddp-kbit --mode train --help
+ddp-kbit --mode experiment --help
+ddp-kbit --mode benchmark --help
+
+# Training with custom config
+ddp-kbit --mode train --config_path my_config.json --distributed
+
+# Experiments with custom parameters
+ddp-kbit --mode experiment --experiment_type multiple --iterations 20
 ```
 
 ## 🔧 Configuration
@@ -183,7 +245,6 @@ exp_fn()
 results = run_multiple_experiments(iterations=10)
 ```
 
-
 ## 🔍 Monitoring and Visualization
 
 ### Performance Metrics
@@ -227,10 +288,15 @@ checkpoint = load_checkpoint("model_v1")
    - Check memory allocation settings
    - Verify GPU discovery scripts
 
+4. **Import Errors**
+   - Ensure package is installed correctly: `pip install -e .`
+   - Check Python path and working directory
+   - Verify all dependencies are installed: `pip install -r requirements.txt`
+
 ### Logging
 Enable debug logging for detailed information:
 ```bash
-python DDP_KBIT/main.py --mode train --log_level DEBUG
+ddp-kbit --mode train --log_level DEBUG
 ```
 
 ## 🔧 Advanced Usage
@@ -307,3 +373,4 @@ For issues and questions:
 2. Review configuration examples
 3. Enable debug logging for detailed diagnostics
 4. Consult the original notebook for reference implementation
+5. Ensure proper installation with `pip install -e .`

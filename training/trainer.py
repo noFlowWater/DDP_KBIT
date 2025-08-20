@@ -117,6 +117,7 @@ def main_fn(
         >>> results = main_fn(training_config, kafka_config, data_loader_config, True)
         >>> print(f"Final test accuracy: {results['test_metrics']['accuracy'][-1]}")
     """
+
     # Initialize distributed training environment
     print("Starting distributed training initialization...")
     

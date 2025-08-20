@@ -1,0 +1,12 @@
+include README.md
+include requirements.txt
+recursive-include config *.py
+recursive-include data *.py
+recursive-include experiments *.py *.md
+recursive-include models *.py
+recursive-include training *.py *.md
+recursive-include utils *.py
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude *.ipynb

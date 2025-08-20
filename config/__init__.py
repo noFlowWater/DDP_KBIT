@@ -17,20 +17,27 @@ from .training_config import (
 )
 
 from .data_config import (
-    get_payload_config,
-    get_data_loader_config,
-    get_mongo_config,
+    KAFKA_CONFIG,
+    PAYLOAD_CONFIG,
+    DATA_LOADER_CONFIG,
+    MONGO_CONFIG,
+    MNIST_AVRO_SCHEMA_V1,
+    MNIST_AVRO_SCHEMA_V2,
     transform_RawMNISTData,
     transform_mongodb_image,
-    mnist_avro_schema_v1,
-    mnist_avro_schema_v2
+    get_data_loader_config_for_experiment,
+    get_data_loader_config_with_topic
 )
 
 from .spark_config import (
-    get_spark_config,
-    load_config_from_file,
-    validate_config,
-    jar_files
+    SPARK_CONFIG,
+    JAR_URLS,
+    create_spark_session,
+    create_spark_session_original_style,
+    get_spark_config_for_num_processes,
+    load_external_config,
+    validate_spark_config,
+    print_spark_config_summary
 )
 
 __all__ = [
@@ -44,17 +51,24 @@ __all__ = [
     'NeuralNetwork',
     
     # Data configuration
-    'get_payload_config',
-    'get_data_loader_config',
-    'get_mongo_config',
+    'KAFKA_CONFIG',
+    'PAYLOAD_CONFIG',
+    'DATA_LOADER_CONFIG',
+    'MONGO_CONFIG',
+    'MNIST_AVRO_SCHEMA_V1',
+    'MNIST_AVRO_SCHEMA_V2',
     'transform_RawMNISTData',
     'transform_mongodb_image',
-    'mnist_avro_schema_v1',
-    'mnist_avro_schema_v2',
+    'get_data_loader_config_for_experiment',
+    'get_data_loader_config_with_topic',
     
     # Spark configuration
-    'get_spark_config',
-    'load_config_from_file',
-    'validate_config',
-    'jar_files',
+    'SPARK_CONFIG',
+    'JAR_URLS',
+    'create_spark_session',
+    'create_spark_session_original_style',
+    'get_spark_config_for_num_processes',
+    'load_external_config',
+    'validate_spark_config',
+    'print_spark_config_summary',
 ]

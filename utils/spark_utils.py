@@ -13,7 +13,7 @@ from typing import Dict, Any, Optional, List
 from pyspark.sql import SparkSession
 from pyspark.context import SparkContext
 from pyspark.conf import SparkConf
-from DDP_KBIT.config import spark_config
+from ..config import spark_config
 
 
 def get_first_ip() -> str:

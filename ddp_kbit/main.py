@@ -25,12 +25,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 _IMPORTS_SUCCESSFUL = False
 
 try:
-    from config import training_config, data_config, spark_config
-    from models.networks import create_cnn_model, create_feedforward_model
-    from training.trainer import main_fn
-    from experiments.runner import exp_fn, run_multiple_experiments
-    from utils.spark_utils import create_spark_session, setup_working_directory
-    from utils.visualization import print_statistical_analysis
+    from ddp_kbit.config import training_config, data_config
+    from ddp_kbit.models.networks import create_cnn_model, create_feedforward_model
+    from ddp_kbit.training.trainer import main_fn
+    from ddp_kbit.experiments.runner import exp_fn, run_multiple_experiments
+    from ddp_kbit.utils.spark_utils import create_spark_session, setup_working_directory
+    from ddp_kbit.utils.visualization import print_statistical_analysis
     _IMPORTS_SUCCESSFUL = True
 except ImportError as e:
     print(f"Error importing ddp_kbit modules: {e}")

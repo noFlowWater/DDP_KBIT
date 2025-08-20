@@ -16,7 +16,7 @@ setup(
         "pyspark==3.5.1",
         "numpy==1.26.4",
         "pandas==2.2.2",
-        "matplotlib=3.4.3",
+        "matplotlib==3.4.3",
         "seaborn==0.13.0",
         "scikit-learn==1.4.2",
         "tqdm==4.66.1",

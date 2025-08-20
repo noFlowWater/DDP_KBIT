@@ -223,7 +223,7 @@ def exp_fn(training_config: Dict[str, Any],
         },
         {
             "name": "avro_none",
-            "topic": "my-topic-5",
+            "topic": "my-topic-2",
             "payload_config": {
                 "message_format": "avro",
                 "compression": "none",
@@ -254,7 +254,7 @@ def exp_fn(training_config: Dict[str, Any],
         },
         {
             "name": "json_lz4",
-            "topic": "my-topic-6",
+            "topic": "my-topic-3",
             "payload_config": {
                 "message_format": "none",
                 "compression": "lz4"
@@ -262,7 +262,7 @@ def exp_fn(training_config: Dict[str, Any],
         },
         {
             "name": "json_none",
-            "topic": "my-topic-7",
+            "topic": "my-topic",
             "payload_config": {
                 "message_format": "none",
                 "compression": "none"

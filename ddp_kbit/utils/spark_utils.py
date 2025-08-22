@@ -13,8 +13,6 @@ from typing import Dict, Any, Optional, List
 from pyspark.sql import SparkSession
 from pyspark.context import SparkContext
 from pyspark.conf import SparkConf
-from ddp_kbit.config import spark_config
-
 
 def get_first_ip() -> str:
     """
@@ -64,7 +62,6 @@ def create_spark_session(
     master_url: str = "spark://spark-master-service:7077",
     external_config_path: str = "config.json",
     driver_port: str = "39337",
-    spark_config: Dict[str, Any] = spark_config.SPARK_CONFIG
 ) -> SparkSession:
     """
     Create and configure a Spark session for distributed deep learning with GPU support.
@@ -74,7 +71,6 @@ def create_spark_session(
         master_url (str): Spark master URL. Defaults to "spark://spark-master-service:7077".
         external_config_path (str): Path to configuration file. Defaults to "config.json".
         driver_port (str): Driver port for Spark. Defaults to "39337".
-        spark_config (Dict[str, Any]): Additional custom configurations.
     
     Returns:
         SparkSession: Configured Spark session.
@@ -118,15 +114,9 @@ def create_spark_session(
             .config("spark.default.parallelism", repartition_num)
             .config("spark.sql.shuffle.partitions", repartition_num)
         )
-        
-        # Apply custom configurations if provided
-        if spark_config:
-            for key, value in spark_config.items():
-                builder = builder.config(key, value)
-        
+    
         # Create the session
         spark = builder.getOrCreate()
-        
         
         # Configure logging
         configure_spark_logging(spark)

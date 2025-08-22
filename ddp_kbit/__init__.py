@@ -29,7 +29,6 @@ from .main import main
 
 # Import key classes and functions for easy access
 try:
-    from .config import training_config, data_config, spark_config
     from .models.networks import Net, NeuralNetwork, create_cnn_model, create_feedforward_model
     from .training.trainer import main_fn
     from .training.distributed import initialize_distributed_training
@@ -42,11 +41,6 @@ try:
     __all__ = [
         # Main entry point
         'main',
-        
-        # Configuration modules
-        'training_config',
-        'data_config', 
-        'spark_config',
         
         # Model classes
         'Net',

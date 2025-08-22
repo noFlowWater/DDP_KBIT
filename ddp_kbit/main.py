@@ -25,7 +25,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 _IMPORTS_SUCCESSFUL = False
 
 try:
-    from ddp_kbit.config import training_config, data_config
     from ddp_kbit.models.networks import create_cnn_model, create_feedforward_model
     from ddp_kbit.training.trainer import main_fn
     from ddp_kbit.experiments.runner import exp_fn, run_multiple_experiments
@@ -51,7 +50,7 @@ def setup_logging(log_level: str = "INFO") -> None:
     )
 
 
-def load_external_config(config_path: Optional[str]) -> Dict[str, Any]:
+def load_external_config(config_path: Optional[str] = "config.json") -> Dict[str, Any]:
     """Load configuration from external JSON file if provided."""
     if config_path and os.path.exists(config_path):
         try:
@@ -63,42 +62,42 @@ def load_external_config(config_path: Optional[str]) -> Dict[str, Any]:
     return {}
 
 
-def run_training_mode(args: argparse.Namespace) -> None:
+def run_training_mode(args: argparse.Namespace, config_dict: Optional[Dict[str, Any]] = None) -> None:
     """Run training mode using the main_fn from the original notebook."""
+    if config_dict is None:
+        # error handling
+        raise ValueError("config_dict is required")
+
     if not _IMPORTS_SUCCESSFUL:
         print("❌ Training mode not available - missing dependencies")
         return
         
     logging.info("Starting training mode...")
     
-    # Load external configuration if provided
-    external_config = load_external_config(args.config_path)
-    
     # Setup working directory
     setup_working_directory()
     
-    # Create Spark session
-    spark = create_spark_session(
-        app_name="DDP_KBIT_Training",
-    )
+    spark = create_spark_session()
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor
         
-        # Get configurations
-        train_config = training_config.get_complete_training_config()
-        kafka_config = data_config.KAFKA_CONFIG
-        data_loader_config = data_config.DATA_LOADER_CONFIG
+        # Get configurations directly from config_dict
+        train_config = config_dict["training_config"].copy()
+        kafka_config = config_dict["kafka_config"].copy()
+        data_loader_config = config_dict["data_loader_config"].copy()
         
-        # Get number of processes from Spark configuration
-        num_processes = int(spark.conf.get("spark.executor.instances"))
+        # Get number of processes from config_dict
+        #load external config
+        external_config_dict = load_external_config(args.config_path)
+        num_processes = external_config_dict["NUM_EXECUTORS"]
         
         # Run the main training function using TorchDistributor
         result = TorchDistributor(
             num_processes=num_processes,
             local_mode=False,
-            use_gpu=train_config["use_gpu"]
-        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=train_config["use_gpu"])
+            use_gpu=config_dict["training_config"]["use_gpu"]
+        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
         
         logging.info("Training completed successfully!")
         
@@ -110,7 +109,7 @@ def run_training_mode(args: argparse.Namespace) -> None:
             spark.stop()
 
 
-def run_experiment_mode(args: argparse.Namespace) -> None:
+def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str, Any]] = None) -> None:
     """Run experiment mode using the exp_fn from the original notebook."""
     if not _IMPORTS_SUCCESSFUL:
         print("❌ Experiment mode not available - missing dependencies")
@@ -118,40 +117,43 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
         
     logging.info(f"Starting experiment mode: {args.experiment_type}")
     
-    # Load external configuration if provided
-    external_config = load_external_config(args.config_path)
+    if config_dict is None:
+        # error handling
+        raise ValueError("config_dict is required")
+
+    logging.info("Using provided config dictionary")
+    
     
     # Setup working directory
     setup_working_directory()
-    
-    # Create Spark session
-    spark = create_spark_session(
-        app_name="DDP_KBIT_Experiments",
-    )
+
+    spark = create_spark_session()
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor
         
-        # Get configurations
-        train_config = training_config.get_complete_training_config()
-        kafka_config = data_config.KAFKA_CONFIG
-        data_loader_config = data_config.DATA_LOADER_CONFIG
+        # Get configurations directly from config_dict
+        train_config = config_dict["training_config"].copy()
+        kafka_config = config_dict["kafka_config"].copy()
+        data_loader_config = config_dict["data_loader_config"].copy()
         
-        # Get number of processes from Spark configuration
-        num_processes = int(spark.conf.get("spark.executor.instances"))
+        # Get number of processes from config_dict
+        #load external config
+        external_config_dict = load_external_config(args.config_path)
+        num_processes = external_config_dict["NUM_EXECUTORS"]
         
         if args.experiment_type == "single":
             # Run single experiment using TorchDistributor
             result = TorchDistributor(
                 num_processes=num_processes,
                 local_mode=False,
-                use_gpu=True
-            ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=True)
+                use_gpu=config_dict["training_config"]["use_gpu"]
+            ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
         elif args.experiment_type == "multiple":
             results = run_multiple_experiments(spark, train_config, 
                                                 kafka_config, data_loader_config, 
                                                 iteration_count=args.iterations, 
-                                                use_gpu=True)
+                                                use_gpu=config_dict["training_config"]["use_gpu"])
             print_statistical_analysis(results)
         else:
             logging.error(f"Unknown experiment type: {args.experiment_type}")
@@ -165,84 +167,6 @@ def run_experiment_mode(args: argparse.Namespace) -> None:
         if spark:
             spark.stop()
 
-
-def create_sample_config() -> None:
-    """Create a sample configuration file using existing config modules dynamically."""
-    if not _IMPORTS_SUCCESSFUL:
-        print("❌ Create sample config not available - missing dependencies")
-        return
-        
-    # Import configuration constants and functions
-    from config.training_config import get_complete_training_config
-    from config.data_config import KAFKA_CONFIG, MONGO_CONFIG, DATA_LOADER_CONFIG, PAYLOAD_CONFIG
-    from config.spark_config import SPARK_CONFIG
-    
-    # Get configurations from modules
-    training_config = get_complete_training_config()
-    
-    # Convert non-serializable objects to strings for JSON compatibility
-    serializable_training_config = {
-        "base_model_type": training_config["base_model"].__class__.__name__,
-        "optimizer_class": f"{training_config['optimizer_class'].__module__}.{training_config['optimizer_class'].__name__}",
-        "optimizer_params": training_config["optimizer_params"],
-        "loss_fn": f"{training_config['loss_fn'].__class__.__module__}.{training_config['loss_fn'].__class__.__name__}",
-        "perform_validation": training_config["perform_validation"],
-        "num_epochs": training_config["num_epochs"],
-        "batch_size": training_config["batch_size"],
-        "metrics": {k: v.__class__.__name__ for k, v in training_config["metrics"].items()}
-    }
-
-    # Create serializable payload config
-    serializable_payload_config = PAYLOAD_CONFIG.copy()
-    if "transform_data_fn" in serializable_payload_config and callable(serializable_payload_config["transform_data_fn"]):
-        serializable_payload_config["transform_data_fn"] = serializable_payload_config["transform_data_fn"].__name__
-    if "transform_label_fn" in serializable_payload_config and callable(serializable_payload_config["transform_label_fn"]):
-        serializable_payload_config["transform_label_fn"] = serializable_payload_config["transform_label_fn"].__name__
-    
-    # Create serializable data loader config
-    serializable_data_loader_config = DATA_LOADER_CONFIG.copy()
-    # Convert transform function references to strings
-    if "payload_config" in serializable_data_loader_config:
-        payload_config = serializable_data_loader_config["payload_config"].copy()
-        if "transform_data_fn" in payload_config and callable(payload_config["transform_data_fn"]):
-            payload_config["transform_data_fn"] = payload_config["transform_data_fn"].__name__
-        if "transform_label_fn" in payload_config and callable(payload_config["transform_label_fn"]):
-            payload_config["transform_label_fn"] = payload_config["transform_label_fn"].__name__
-        serializable_data_loader_config["payload_config"] = serializable_payload_config
-    
-
-    
-    # Create the complete configuration using existing modules
-    sample_config = {
-        # "spark_config": {
-        #     "master": "local[*]",  # Override for local development
-        #     "app_name": "ddp_kbit_Sample",
-        #     "executor_instances": 2,  # Reduced for sample
-        #     "executor_cores": 2,      # Reduced for sample  
-        #     "executor_memory": "4g",  # Reduced for sample
-        #     # Include some key configs from SPARK_CONFIG
-        #     "driver_host_resolution": "dynamic",
-        #     "gpu_enabled": True,
-        #     "rapids_enabled": True
-        # },
-        "training_config": serializable_training_config,
-        "mongo_config": MONGO_CONFIG,
-        "kafka_config": KAFKA_CONFIG,
-        "data_loader_config": serializable_data_loader_config,
-        "payload_config": serializable_payload_config,
-        "metadata": {
-            "generated_from": "ddp_kbit.config modules",
-            "description": "Sample configuration dynamically generated from existing config modules",
-            "usage_note": "This config uses the same settings as defined in the original notebook cell 24"
-        }
-    }
-    
-    with open("sample_config.json", "w") as f:
-        json.dump(sample_config, f, indent=2)
-    
-    print("Created sample_config.json - customize this file for your needs.")
-
-
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
@@ -253,7 +177,6 @@ Examples:
     %(prog)s --mode train --distributed
     %(prog)s --mode experiment --experiment_type multiple --iterations 10
     %(prog)s --mode benchmark --iterations 5
-    %(prog)s --create_sample_config
         """
     )
     
@@ -262,11 +185,12 @@ Examples:
         choices=["train", "experiment"],
         help="Execution mode"
     )
-    
+
     parser.add_argument(
         "--config_path",
         type=str,
-        help="Path to external JSON configuration file"
+        default="config.json",
+        help="Path to the configuration file"
     )
     
     parser.add_argument(
@@ -296,22 +220,11 @@ Examples:
         help="Logging level"
     )
     
-    parser.add_argument(
-        "--create_sample_config",
-        action="store_true",
-        help="Create a sample configuration file and exit"
-    )
-    
     args = parser.parse_args()
-    
-    # Handle special case for creating sample config
-    if args.create_sample_config:
-        create_sample_config()
-        return
     
     # Validate arguments
     if not args.mode:
-        parser.error("--mode is required unless using --create_sample_config")
+        parser.error("--mode is required")
     
     # Setup logging
     setup_logging(args.log_level)

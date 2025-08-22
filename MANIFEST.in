@@ -1,6 +1,5 @@
 include README.md
 include requirements.txt
-recursive-include config *.py
 recursive-include data *.py
 recursive-include experiments *.py *.md
 recursive-include models *.py

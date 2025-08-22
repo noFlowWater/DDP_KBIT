@@ -134,8 +134,8 @@ def main_fn(
     # Log process information
     print(f"[PID {os.getpid()}] Initializing process group with: {init_config['env_dict']}")
     print(f"[PID {os.getpid()}] world_size = {init_config['world_size']}, "
-          f"global_rank = {init_config['global_rank']}, local_rank = {init_config['local_rank']}, "
-          f"backend = {init_config['backend']}, device_ids = {init_config['device_ids']}")
+        f"global_rank = {init_config['global_rank']}, local_rank = {init_config['local_rank']}, "
+        f"backend = {init_config['backend']}, device_ids = {init_config['device_ids']}")
     
     # Initialize performance profiler and metrics tracker
     profiler = PerformanceProfiler()
@@ -333,8 +333,8 @@ def _setup_training_components(
     
     if rank == 0:
         print(f"{type(model)=}, {model=}\n"
-              f"{type(optimizer)=}, {optimizer=}\n"
-              f"{type(training_config['loss_fn'])=}, {training_config['loss_fn']=}")
+            f"{type(optimizer)=}, {optimizer=}\n"
+            f"{type(training_config['loss_fn'])=}, {training_config['loss_fn']=}")
     
     # Create trainer engine
     trainer = create_supervised_trainer(

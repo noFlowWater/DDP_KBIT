@@ -11,11 +11,8 @@ pip install -e .
 ## Quick Start
 
 ```bash
-# Generate sample config (currently has dependency issues)
-python -m ddp_kbit.main --create_sample_config
-
 # Run training
-python -m ddp_kbit.main --mode train --config_path sample_config.json
+python -m ddp_kbit.main --mode train --config_path config.json
 
 # Run experiments  
 python -m ddp_kbit.main --mode experiment --experiment_type single
@@ -38,14 +35,6 @@ main_fn()
 # Experiments
 exp_fn()
 ```
-
-## Configuration
-
-Edit `sample_config.json`:
-- `training_config`: epochs, batch_size, learning_rate
-- `spark_config`: cluster settings, memory allocation  
-- `data_config`: Kafka settings, data formats
-
 ## Features
 
 - Distributed PyTorch training with PySpark

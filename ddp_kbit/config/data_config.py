@@ -106,6 +106,15 @@ MNIST_AVRO_SCHEMA_V2 = {
     ]
 }
 
+DLSAMPLE_AVRO_SCHEMA = {
+    "type": "record",
+    "name": "DLSample",
+    "fields": [
+        {"name": "x", "type": {"type": "array", "items": "float"}},
+        {"name": "y", "type": "int"}
+    ]
+}
+
 # Default schema (as set in the original notebook)
 MNIST_AVRO_SCHEMA = MNIST_AVRO_SCHEMA_V2
 
@@ -115,6 +124,16 @@ KAFKA_CONFIG = {
     'data_load_topic': 'kbit-p3r1',
 }
 
+# MongoDB 연결 설정 방법
+# http://155.230.36.25:3001/db-connections/register
+# BODY:
+# {
+# "connection_id": "my-mongo-1",
+# "db_type": "mongo",
+# "url": "mongodb://kbit:dacslab522@155.230.35.215:32017,155.230.35.215:32018,155.230.35.215:32019/?replicaSet=kbit-mongodb-replicaset&authSource=kbit-db",
+# "database": "kbit-db"
+# }
+# -> 200 OK 응답 받은 후, connection_id를 사용하여 데이터 조회 가능.
 # MongoDB Configuration
 MONGO_CONFIG = {
     "connection_id": "my-mongo-1",
@@ -152,6 +171,15 @@ PAYLOAD_CONFIG_AVRO = {
     "avro_schema": MNIST_AVRO_SCHEMA,
     "data_field": "data",
     "label_field": "label",
+    "transform_data_fn": transform_mongodb_image,
+    "transform_label_fn": None,
+}
+
+PAYLOAD_CONFIG_AVRO_DLSAMPLE = {
+    "message_format": "avro",
+    "avro_schema": DLSAMPLE_AVRO_SCHEMA,
+    "data_field": "x",
+    "label_field": "y",
     "transform_data_fn": transform_mongodb_image,
     "transform_label_fn": None,
 }
@@ -207,7 +235,7 @@ DATA_LOADER_CONFIG = {
         'bootstrap_servers': KAFKA_CONFIG['bootstrap_servers'],  # bootstrap_servers옵션은 필수. 나머지는 선택.
         # Other Kafka Consumer Params ..
     },
-    "payload_config": PAYLOAD_CONFIG
+    "payload_config": PAYLOAD_CONFIG_AVRO_DLSAMPLE
 }
 
 # Alternative Kafka configurations for experiments

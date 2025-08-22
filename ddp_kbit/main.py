@@ -87,13 +87,9 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
         kafka_config = config_dict["kafka_config"].copy()
         data_loader_config = config_dict["data_loader_config"].copy()
         
-        # Get number of processes from config_dict
-        #load external config
-        num_processes = int(spark.sparkContext.getConf().get("spark.executor.instances"))
-        
         # Run the main training function using TorchDistributor
         result = TorchDistributor(
-            num_processes=num_processes,
+            num_processes=int(spark.sparkContext.getConf().get("spark.executor.instances")),
             local_mode=False,
             use_gpu=config_dict["training_config"]["use_gpu"]
         ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
@@ -136,14 +132,10 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
         kafka_config = config_dict["kafka_config"].copy()
         data_loader_config = config_dict["data_loader_config"].copy()
         
-        # Get number of processes from config_dict
-        #load external config
-        num_processes = int(spark.sparkContext.getConf().get("spark.executor.instances"))
-        
         if args.experiment_type == "single":
             # Run single experiment using TorchDistributor
             result = TorchDistributor(
-                num_processes=num_processes,
+                num_processes=int(spark.sparkContext.getConf().get("spark.executor.instances")),
                 local_mode=False,
                 use_gpu=config_dict["training_config"]["use_gpu"]
             ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])

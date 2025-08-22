@@ -36,6 +36,7 @@ try:
     from .utils.spark_utils import create_spark_context
     from .utils.checkpoint import load_checkpoint, save_checkpoint
     from .utils.visualization import calculate_boxplot_stats, plot_training_metrics
+    from .data.data_fetcher import DistributedDataFetcher
     
     # Define what gets imported with "from ddp_kbit import *"
     __all__ = [
@@ -62,6 +63,9 @@ try:
         'save_checkpoint',
         'calculate_boxplot_stats',
         'plot_training_metrics',
+
+        # Data fetcher
+        'DistributedDataFetcher',
     ]
     
 except ImportError as e:

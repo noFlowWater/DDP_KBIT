@@ -9,7 +9,7 @@ deep learning system.
 from ddp_kbit.utils.spark_utils import (
     get_first_ip,
     load_config,
-    create_spark_session,
+    create_spark_context,
     configure_spark_logging,
     check_kafka_partitions,
     load_from_kafka,
@@ -38,7 +38,7 @@ __all__ = [
     # Spark utilities
     'get_first_ip',
     'load_config',
-    'create_spark_session',
+    'create_spark_context',
     'configure_spark_logging',
     'check_kafka_partitions',
     'load_from_kafka',

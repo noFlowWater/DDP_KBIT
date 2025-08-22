@@ -361,7 +361,7 @@ def exp_fn(training_config: Dict[str, Any],
     return experiment_results
 
 
-def run_multiple_experiments(spark: SparkSession, training_config: Dict[str, Any], 
+def run_multiple_experiments(sc: SparkContext, training_config: Dict[str, Any], 
                             kafka_config: Dict[str, Any], 
                             data_loader_config: Dict[str, Any], 
                             iteration_count: int = 30,
@@ -380,9 +380,6 @@ def run_multiple_experiments(spark: SparkSession, training_config: Dict[str, Any
         Dict containing aggregated results from all iterations
     """
     from pyspark.ml.torch.distributor import TorchDistributor
-
-    # Get Spark context
-    sc = spark.sparkContext
 
     # Initialize results storage (all rank times)
     total_results = {

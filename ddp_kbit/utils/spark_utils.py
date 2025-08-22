@@ -57,14 +57,14 @@ def load_config(config_path: str = "config.json") -> Dict[str, Any]:
         raise json.JSONDecodeError(f"Invalid JSON in config file: {e}")
 
 
-def create_spark_session(
+def create_spark_context(
     app_name: str = "SparkDL_KBIT",
     master_url: str = "spark://spark-master-service:7077",
     external_config_path: str = "config.json",
     driver_port: str = "39337",
-) -> SparkSession:
+) -> SparkContext:
     """
-    Create and configure a Spark session for distributed deep learning with GPU support.
+    Create and configure a Spark context for distributed deep learning with GPU support.
     
     Args:
         app_name (str): Name of the Spark application. Defaults to "SparkDL_KBIT".
@@ -73,10 +73,10 @@ def create_spark_session(
         driver_port (str): Driver port for Spark. Defaults to "39337".
     
     Returns:
-        SparkSession: Configured Spark session.
+        SparkContext: Configured Spark context.
     
     Raises:
-        Exception: If unable to create Spark session.
+        Exception: If unable to create Spark context.
     """
     try:
         # Load configuration
@@ -117,11 +117,13 @@ def create_spark_session(
     
         # Create the session
         spark = builder.getOrCreate()
+        sc = spark.sparkContext
+        sc.setLogLevel("ERROR")
         
         # Configure logging
         configure_spark_logging(spark)
         
-        return spark
+        return sc
         
     except Exception as e:
         raise Exception(f"Failed to create Spark session: {e}")

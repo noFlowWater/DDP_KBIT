@@ -28,7 +28,7 @@ try:
     from ddp_kbit.models.networks import create_cnn_model, create_feedforward_model
     from ddp_kbit.training.trainer import main_fn
     from ddp_kbit.experiments.runner import exp_fn, run_multiple_experiments
-    from ddp_kbit.utils.spark_utils import create_spark_session, setup_working_directory
+    from ddp_kbit.utils.spark_utils import create_spark_context, setup_working_directory
     from ddp_kbit.utils.visualization import print_statistical_analysis
     _IMPORTS_SUCCESSFUL = True
 except ImportError as e:
@@ -77,7 +77,7 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
     # Setup working directory
     setup_working_directory()
     
-    spark = create_spark_session()
+    sc = create_spark_context()
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor
@@ -89,7 +89,7 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
         
         # Run the main training function using TorchDistributor
         result = TorchDistributor(
-            num_processes=int(spark.sparkContext.getConf().get("spark.executor.instances")),
+            num_processes=int(sc.getConf().get("spark.executor.instances")),
             local_mode=False,
             use_gpu=config_dict["training_config"]["use_gpu"]
         ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
@@ -122,7 +122,7 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
     # Setup working directory
     setup_working_directory()
 
-    spark = create_spark_session()
+    sc = create_spark_context()
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor
@@ -135,12 +135,12 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
         if args.experiment_type == "single":
             # Run single experiment using TorchDistributor
             result = TorchDistributor(
-                num_processes=int(spark.sparkContext.getConf().get("spark.executor.instances")),
+                num_processes=int(sc.getConf().get("spark.executor.instances")),
                 local_mode=False,
                 use_gpu=config_dict["training_config"]["use_gpu"]
             ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
         elif args.experiment_type == "multiple":
-            results = run_multiple_experiments(spark, train_config, 
+            results = run_multiple_experiments(sc, train_config, 
                                                 kafka_config, data_loader_config, 
                                                 iteration_count=args.iterations, 
                                                 use_gpu=config_dict["training_config"]["use_gpu"])

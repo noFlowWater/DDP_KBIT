@@ -33,7 +33,7 @@ try:
     from .training.trainer import main_fn
     from .training.distributed import initialize_distributed_training
     from .experiments.runner import exp_fn, run_multiple_experiments
-    from .utils.spark_utils import create_spark_session
+    from .utils.spark_utils import create_spark_context
     from .utils.checkpoint import load_checkpoint, save_checkpoint
     from .utils.visualization import calculate_boxplot_stats, plot_training_metrics
     
@@ -57,7 +57,7 @@ try:
         'run_multiple_experiments',
         
         # Utility functions
-        'create_spark_session',
+        'create_spark_context',
         'load_checkpoint',
         'save_checkpoint',
         'calculate_boxplot_stats',

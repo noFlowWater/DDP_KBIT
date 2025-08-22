@@ -100,8 +100,8 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
         logging.error(f"Training failed: {e}")
         raise
     finally:
-        if spark:
-            spark.stop()
+        # stop spark context
+        sc.stop()
 
 
 def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str, Any]] = None) -> None:
@@ -154,8 +154,8 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
         logging.error(f"Experiments failed: {e}")
         raise
     finally:
-        if spark:
-            spark.stop()
+        # stop spark context
+        sc.stop()
 
 def main():
     """Main entry point."""

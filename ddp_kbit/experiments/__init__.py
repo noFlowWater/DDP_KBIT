@@ -8,7 +8,6 @@ for the ddp_kbit distributed deep learning system.
 from ddp_kbit.experiments.runner import (
     exp_fn,
     run_multiple_experiments,
-    DistributedDataFetcher,
     initialize_distributed_training
 )
 from ddp_kbit.experiments.benchmarks import (
@@ -20,7 +19,6 @@ __all__ = [
     # Experiment runner
     'exp_fn',
     'run_multiple_experiments',
-    'DistributedDataFetcher',
     'initialize_distributed_training',
     
     # Benchmarking

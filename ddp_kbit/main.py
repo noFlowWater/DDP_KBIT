@@ -62,7 +62,7 @@ def load_external_config(config_path: Optional[str] = "config.json") -> Dict[str
     return {}
 
 
-def run_training_mode(args: argparse.Namespace, config_dict: Optional[Dict[str, Any]] = None) -> None:
+def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
     """Run training mode using the main_fn from the original notebook."""
     if config_dict is None:
         # error handling
@@ -89,8 +89,7 @@ def run_training_mode(args: argparse.Namespace, config_dict: Optional[Dict[str, 
         
         # Get number of processes from config_dict
         #load external config
-        external_config_dict = load_external_config(args.config_path)
-        num_processes = external_config_dict["NUM_EXECUTORS"]
+        num_processes = int(spark.sparkContext.getConf().get("spark.executor.instances"))
         
         # Run the main training function using TorchDistributor
         result = TorchDistributor(
@@ -139,8 +138,7 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
         
         # Get number of processes from config_dict
         #load external config
-        external_config_dict = load_external_config(args.config_path)
-        num_processes = external_config_dict["NUM_EXECUTORS"]
+        num_processes = int(spark.sparkContext.getConf().get("spark.executor.instances"))
         
         if args.experiment_type == "single":
             # Run single experiment using TorchDistributor

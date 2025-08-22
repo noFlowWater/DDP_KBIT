@@ -168,7 +168,7 @@ PAYLOAD_CONFIG = {
 # Data Loader Configuration
 DATA_LOADER_CONFIG = {
     "data_loader_type": "kafka",  # "kafka" 또는 "local"
-    "local_data_path": "/root/processed_mnist",  # 로컬 데이터 경로 ( 각 워커의 파일시스템 PATH )
+    # "local_data_path": "/root/processed_mnist",  # 로컬 데이터 경로 ( 각 워커의 파일시스템 PATH )
     
     # 만약 data_loader_config 에 "offsets_data", "offsets_data_topic" 키가 있으면, 해당 데이터를 사용하여 데이터셋을 생성
     # 만약 없으면, "api_config" 으로 데이터셋을 생성
@@ -180,8 +180,8 @@ DATA_LOADER_CONFIG = {
     # "offsets_data": ['0:0:19999', '1:0:19999', '2:0:19999'], # MNIST ( AVRO none )  데이터 오프셋 범위
     # "offsets_data_topic": "my-topic-2", # AVRO none
     
-    "offsets_data": ['0:0:19999', '1:0:19999', '2:0:19999'],  # MNIST ( JSON Lz4 )  데이터 오프셋 범위
-    "offsets_data_topic": "my-topic-3",  # JSON Lz4
+    # "offsets_data": ['0:0:19999', '1:0:19999', '2:0:19999'],  # MNIST ( JSON Lz4 )  데이터 오프셋 범위
+    # "offsets_data_topic": "my-topic-3",  # JSON Lz4
     
     # "offsets_data": ['0:0:19999', '1:0:19999', '2:0:19999'], # MNIST ( JSON none )  데이터 오프셋 범위
     # "offsets_data_topic": "my-topic", # JSON none

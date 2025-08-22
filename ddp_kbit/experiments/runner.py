@@ -63,14 +63,12 @@ class DistributedDataFetcher:
         if "offsets_data" in self.data_loader_config and "offsets_data_topic" in self.data_loader_config:
             offsets_data = self.data_loader_config["offsets_data"]
             send_topic = self.data_loader_config["offsets_data_topic"]
-            
-            if "api_config" in self.data_loader_config:
-                api_config = self.data_loader_config["api_config"]
-                url = create_dynamic_url(api_config)
-                print(f"Rank {self.rank}: API URL = {url}")
-                
+        elif "api_config" in self.data_loader_config:
+            api_config = self.data_loader_config["api_config"]
+            url = create_dynamic_url(api_config)
+            print(f"Rank {self.rank}: API URL = {url}")
         else:
-            raise ValueError("offsets_data and offsets_data_topic are required in data_loader_config")
+            raise ValueError("offsets_data and offsets_data_topic or api_config are required in data_loader_config")
         
         # Split offsets according to configuration
         offset_ranges = self._split_offsets(offsets_data)

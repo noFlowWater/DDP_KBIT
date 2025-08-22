@@ -193,6 +193,9 @@ PAYLOAD_CONFIG = {
     "transform_label_fn": None,
 }
 
+#TEMP for Experiment
+PAYLOAD_CONFIG = PAYLOAD_CONFIG_AVRO_DLSAMPLE
+
 # Data Loader Configuration
 DATA_LOADER_CONFIG = {
     "data_loader_type": "kafka",  # "kafka" 또는 "local"

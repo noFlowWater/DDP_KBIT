@@ -198,8 +198,8 @@ class DistributedDataset(Dataset):
         avro_data = fastavro.schemaless_reader(BytesIO(msg.value), self.avro_schema)
         
         # Extract data
-        data = avro_data["data"]
-        label = avro_data["label"]
+        data = avro_data[self.data_field]
+        label = avro_data[self.label_field]
         
         # Apply transforms
         if self.transform_data_fn:

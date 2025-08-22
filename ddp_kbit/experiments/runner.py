@@ -198,8 +198,8 @@ def exp_fn(training_config: Dict[str, Any],
         
         # Create configuration for current experiment
         current_data_loader_config = data_loader_config.copy()
-        current_data_loader_config['offsets_data_topic'] = exp_config['topic']
-        current_data_loader_config['payload_config'] = exp_config['payload_config']
+        current_data_loader_config['offsets_data_topic'] = exp_config.get('topic')
+        current_data_loader_config['payload_config'] = exp_config.get('payload_config')
         
         # Measure data loading time
         start_time = time.time()

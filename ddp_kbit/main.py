@@ -191,6 +191,13 @@ def create_sample_config() -> None:
         "batch_size": training_config["batch_size"],
         "metrics": {k: v.__class__.__name__ for k, v in training_config["metrics"].items()}
     }
+
+    # Create serializable payload config
+    serializable_payload_config = PAYLOAD_CONFIG.copy()
+    if "transform_data_fn" in serializable_payload_config and callable(serializable_payload_config["transform_data_fn"]):
+        serializable_payload_config["transform_data_fn"] = serializable_payload_config["transform_data_fn"].__name__
+    if "transform_label_fn" in serializable_payload_config and callable(serializable_payload_config["transform_label_fn"]):
+        serializable_payload_config["transform_label_fn"] = serializable_payload_config["transform_label_fn"].__name__
     
     # Create serializable data loader config
     serializable_data_loader_config = DATA_LOADER_CONFIG.copy()
@@ -201,14 +208,9 @@ def create_sample_config() -> None:
             payload_config["transform_data_fn"] = payload_config["transform_data_fn"].__name__
         if "transform_label_fn" in payload_config and callable(payload_config["transform_label_fn"]):
             payload_config["transform_label_fn"] = payload_config["transform_label_fn"].__name__
-        serializable_data_loader_config["payload_config"] = payload_config
+        serializable_data_loader_config["payload_config"] = serializable_payload_config
     
-    # Create serializable payload config
-    serializable_payload_config = PAYLOAD_CONFIG.copy()
-    if "transform_data_fn" in serializable_payload_config and callable(serializable_payload_config["transform_data_fn"]):
-        serializable_payload_config["transform_data_fn"] = serializable_payload_config["transform_data_fn"].__name__
-    if "transform_label_fn" in serializable_payload_config and callable(serializable_payload_config["transform_label_fn"]):
-        serializable_payload_config["transform_label_fn"] = serializable_payload_config["transform_label_fn"].__name__
+
     
     # Create the complete configuration using existing modules
     sample_config = {

@@ -203,7 +203,7 @@ def exp_fn(training_config: Dict[str, Any],
         # Measure data loading time
         start_time = time.time()
         
-        print(f"RANK[{init_config['global_rank']}] 실험: {exp_config['name']}, 토픽: {exp_config['topic']}")
+        print(f"RANK[{init_config['global_rank']}] 실험: {exp_config['name']}, 토픽: {exp_config['offsets_data_topic']}")
         
         # Create data fetcher and load datasets
         if current_data_loader_config['data_loader_type'] == "kafka":

@@ -57,19 +57,13 @@ def load_config(config_path: str = "config.json") -> Dict[str, Any]:
 
 
 def create_spark_context(
-    app_name: str = "SparkDL_KBIT",
-    master_url: str = "spark://spark-master-service:7077",
-    external_config_path: str = "config.json",
-    driver_port: str = "39337",
+    config_dict: Optional[Dict[str, Any]] = None
 ) -> SparkContext:
     """
     Create and configure a Spark context for distributed deep learning with GPU support.
     
     Args:
-        app_name (str): Name of the Spark application. Defaults to "SparkDL_KBIT".
-        master_url (str): Spark master URL. Defaults to "spark://spark-master-service:7077".
-        external_config_path (str): Path to configuration file. Defaults to "config.json".
-        driver_port (str): Driver port for Spark. Defaults to "39337".
+        config_dict (Dict[str, Any]): Configuration dictionary.
     
     Returns:
         SparkContext: Configured Spark context.
@@ -77,14 +71,14 @@ def create_spark_context(
     Raises:
         Exception: If unable to create Spark context.
     """
-    try:
-        # Load configuration
-        external_config = load_config(external_config_path)
-        
+    try:        
         # Extract configuration values
-        jar_urls = ",".join(external_config["KAFKA_JAR_URLS"])
-        repartition_num = external_config["NUM_EXECUTORS"] * external_config["EXECUTOR_CORES"] * 2
-        
+        master_url = config_dict["spark_config"]["master_url"]
+        app_name = config_dict["spark_config"]["app_name"]
+        driver_port = config_dict["spark_config"]["driver_port"]
+        jar_urls = ",".join(config_dict["spark_config"]["jars_urls"])
+        repartition_num = config_dict["spark_config"]["num_executors"] * config_dict["spark_config"]["executor_cores"] * 2
+
         # Get driver host IP
         driver_host = get_first_ip()
         
@@ -100,10 +94,10 @@ def create_spark_context(
             .config("spark.submit.pyFiles", "mnist_pb2.py")
             .config("spark.jars", jar_urls)
             # Executor Configuration
-            .config("spark.executor.instances", external_config.get("NUM_EXECUTORS", 3))
-            .config("spark.executor.cores", external_config.get("EXECUTOR_CORES", 5))
-            .config("spark.executor.memory", external_config.get("EXECUTOR_MEMORY", "24g"))
-            .config("spark.executor.resource.gpu.amount", external_config.get("EXECUTOR_GPU_AMOUNT", 1))
+            .config("spark.executor.instances", config_dict["spark_config"]["num_executors"])
+            .config("spark.executor.cores", config_dict["spark_config"]["executor_cores"])
+            .config("spark.executor.memory", config_dict["spark_config"]["executor_memory"])
+            .config("spark.executor.resource.gpu.amount", config_dict["spark_config"]["executor_gpu_amount"])
             # GPU and Task Configuration
             .config("spark.task.resource.gpu.amount", 1)
             .config("spark.rapids.sql.concurrentGpuTasks", 1)

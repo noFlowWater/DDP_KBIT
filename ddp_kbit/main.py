@@ -77,7 +77,7 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
     # Setup working directory
     setup_working_directory()
     
-    sc = create_spark_context()
+    sc = create_spark_context(config_dict)
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor
@@ -122,7 +122,7 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
     # Setup working directory
     setup_working_directory()
 
-    sc = create_spark_context()
+    sc = create_spark_context(config_dict)
     
     try:
         from pyspark.ml.torch.distributor import TorchDistributor

@@ -20,6 +20,7 @@ try:
     from ddp_kbit.data.datasets import DistributedDataset
     from ddp_kbit.data.loaders import create_dataloaders
     from ddp_kbit.data.kafka_utils import split_offsets, create_dynamic_url
+    from ddp_kbit.data.data_fetcher import DistributedDataFetcher
 except ImportError:
     # Fallback imports for standalone usage
     import sys

@@ -137,7 +137,7 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
                 num_processes=int(sc.getConf().get("spark.executor.instances")),
                 local_mode=False,
                 use_gpu=config_dict["training_config"]["use_gpu"]
-            ).run(exp_fn, train_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
+            ).run(exp_fn, train_config, data_loader_config, experiment_configs, use_gpu=config_dict["training_config"]["use_gpu"])
         elif args.experiment_type == "multiple":
             results = run_multiple_experiments(sc, train_config, 
                                                 experiment_configs,

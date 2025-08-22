@@ -236,13 +236,13 @@ class DistributedDataset(Dataset):
         """Process MongoDB Avro messages."""
         # JSON parsing → MongoDB Binary extraction → Base64 decoding → Avro deserialization
         json_data = json.loads(msg.value.decode('utf-8'))
-        avro_binary_data = json_data[self.data_field]  # "avro_data"
+        avro_binary_data = json_data["binary_data"]
         binary_data = base64.b64decode(avro_binary_data['Data'])
         avro_data = fastavro.schemaless_reader(BytesIO(binary_data), self.avro_schema)
         
         # Extract data
-        data = avro_data["data"]
-        label = avro_data["label"]
+        data = avro_data[self.data_field]
+        label = avro_data[self.label_field]
         
         # Apply transforms
         if self.transform_data_fn:

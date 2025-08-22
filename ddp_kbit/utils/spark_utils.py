@@ -12,7 +12,6 @@ import subprocess
 from typing import Dict, Any, Optional, List
 from pyspark.sql import SparkSession
 from pyspark.context import SparkContext
-from pyspark.conf import SparkConf
 
 def get_first_ip() -> str:
     """

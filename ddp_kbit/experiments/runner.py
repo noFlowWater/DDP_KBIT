@@ -12,7 +12,7 @@ import torch
 import torch.distributed as dist
 import ignite.distributed as idist
 from typing import Dict, List, Any, Optional
-from pyspark.sql import SparkSession
+from pyspark.context import SparkContext
 import gc
 
 # Import required modules from the project

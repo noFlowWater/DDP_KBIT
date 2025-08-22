@@ -280,6 +280,7 @@ def exp_fn(training_config: Dict[str, Any],
 
 
 def run_multiple_experiments(sc: SparkContext, training_config: Dict[str, Any], 
+                            experiment_configs: List[Dict[str, Any]],
                             data_loader_config: Dict[str, Any], 
                             iteration_count: int = 30,
                             use_gpu: bool = True) -> Dict[str, List[float]]:
@@ -318,7 +319,7 @@ def run_multiple_experiments(sc: SparkContext, training_config: Dict[str, Any],
             num_processes=int(sc.getConf().get("spark.executor.instances")),
             local_mode=False,
             use_gpu=use_gpu
-        ).run(exp_fn, training_config, data_loader_config, use_gpu=use_gpu)
+        ).run(exp_fn, training_config, data_loader_config, experiment_configs, use_gpu=use_gpu)
         
         # Add results to total collection (all rank times)
         for exp_name in total_results.keys():

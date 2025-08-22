@@ -160,9 +160,9 @@ def initialize_distributed_training(use_gpu: bool = True) -> Dict[str, Any]:
 
 
 def exp_fn(training_config: Dict[str, Any], 
-          kafka_config: Dict[str, Any], 
-          data_loader_config: Dict[str, Any], 
-          use_gpu: bool = True) -> Dict[str, Any]:
+        data_loader_config: Dict[str, Any], 
+        experiment_configs: List[Dict[str, Any]],
+        use_gpu: bool = True) -> Dict[str, Any]:
     """
     Run distributed data loading experiments with multiple configurations.
     
@@ -186,89 +186,7 @@ def exp_fn(training_config: Dict[str, Any],
     device = idist.device()
     
     print(f"[PID {os.getpid()}] world_size = {init_config['world_size']}, "
-          f"global_rank = {init_config['global_rank']}, local_rank = {init_config['local_rank']}")
-    
-    # Define experiment configurations
-    experiment_configs = [
-        {
-            "name": "avro_lz4",
-            "topic": "my-topic-4",
-            "payload_config": {
-                "message_format": "avro",
-                "compression": "lz4",
-                "avro_schema": {
-                    "type": "record",
-                    "name": "MNISTImage",
-                    "fields": [
-                        {"name": "data", "type": {"type": "array", "items": "float"}},
-                        {"name": "shape", "type": {"type": "array", "items": "int"}},
-                        {"name": "label", "type": "int"},
-                        {
-                            "name": "meta",
-                            "type": {
-                                "type": "record",
-                                "name": "Meta",
-                                "fields": [
-                                    {"name": "index", "type": "int"},
-                                    {"name": "partition", "type": "int"},
-                                    {"name": "timestamp", "type": "long"},
-                                    {"name": "format", "type": "string"},
-                                    {"name": "compression", "type": "string"}
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "avro_none",
-            "topic": "my-topic-2",
-            "payload_config": {
-                "message_format": "avro",
-                "compression": "none",
-                "avro_schema": {
-                    "type": "record",
-                    "name": "MNISTImage",
-                    "fields": [
-                        {"name": "data", "type": {"type": "array", "items": "float"}},
-                        {"name": "shape", "type": {"type": "array", "items": "int"}},
-                        {"name": "label", "type": "int"},
-                        {
-                            "name": "meta",
-                            "type": {
-                                "type": "record",
-                                "name": "Meta",
-                                "fields": [
-                                    {"name": "index", "type": "int"},
-                                    {"name": "partition", "type": "int"},
-                                    {"name": "timestamp", "type": "long"},
-                                    {"name": "format", "type": "string"},
-                                    {"name": "compression", "type": "string"}
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "json_lz4",
-            "topic": "my-topic-3",
-            "payload_config": {
-                "message_format": "none",
-                "compression": "lz4"
-            }
-        },
-        {
-            "name": "json_none",
-            "topic": "my-topic",
-            "payload_config": {
-                "message_format": "none",
-                "compression": "none"
-            }
-        }
-    ]
+        f"global_rank = {init_config['global_rank']}, local_rank = {init_config['local_rank']}")
     
     # Dictionary to store experiment results
     experiment_results = {}
@@ -362,7 +280,6 @@ def exp_fn(training_config: Dict[str, Any],
 
 
 def run_multiple_experiments(sc: SparkContext, training_config: Dict[str, Any], 
-                            kafka_config: Dict[str, Any], 
                             data_loader_config: Dict[str, Any], 
                             iteration_count: int = 30,
                             use_gpu: bool = True) -> Dict[str, List[float]]:
@@ -401,7 +318,7 @@ def run_multiple_experiments(sc: SparkContext, training_config: Dict[str, Any],
             num_processes=int(sc.getConf().get("spark.executor.instances")),
             local_mode=False,
             use_gpu=use_gpu
-        ).run(exp_fn, training_config, kafka_config, data_loader_config, use_gpu=use_gpu)
+        ).run(exp_fn, training_config, data_loader_config, use_gpu=use_gpu)
         
         # Add results to total collection (all rank times)
         for exp_name in total_results.keys():

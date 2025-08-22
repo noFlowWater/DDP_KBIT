@@ -67,13 +67,13 @@ class DistributedDataset(Dataset):
             self.data_field = "data"
             self.label_field = "label"
         else:
-            self.message_format = payload_config.get("message_format", "protobuf")
+            self.message_format = payload_config.get("message_format", "avro")
             self.transform_data_fn = payload_config.get("transform_data_fn")
             self.transform_label_fn = payload_config.get("transform_label_fn")
             self.protobuf_msg_class = payload_config.get("protobuf_msg_class")
             self.avro_schema = payload_config.get("avro_schema")
-            self.data_field = payload_config.get("data_field", "data")
-            self.label_field = payload_config.get("label_field", "label")
+            self.data_field = payload_config.get("data_field", "x")
+            self.label_field = payload_config.get("label_field", "y")
             self.schema_fingerprint_field = payload_config.get("schema_fingerprint_field", "schema_fingerprint")
 
         # Load data (transformations will be applied in _process_message)

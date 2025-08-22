@@ -84,7 +84,6 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
         
         # Get configurations directly from config_dict
         train_config = config_dict["training_config"].copy()
-        kafka_config = config_dict["kafka_config"].copy()
         data_loader_config = config_dict["data_loader_config"].copy()
         
         # Run the main training function using TorchDistributor
@@ -92,7 +91,7 @@ def run_training_mode(config_dict: Optional[Dict[str, Any]] = None) -> None:
             num_processes=int(sc.getConf().get("spark.executor.instances")),
             local_mode=False,
             use_gpu=config_dict["training_config"]["use_gpu"]
-        ).run(main_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
+        ).run(main_fn, train_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
         
         logging.info("Training completed successfully!")
         
@@ -129,7 +128,7 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
         
         # Get configurations directly from config_dict
         train_config = config_dict["training_config"].copy()
-        kafka_config = config_dict["kafka_config"].copy()
+        experiment_configs = config_dict["experiment_configs"].copy()
         data_loader_config = config_dict["data_loader_config"].copy()
         
         if args.experiment_type == "single":
@@ -138,10 +137,11 @@ def run_experiment_mode(args: argparse.Namespace, config_dict: Optional[Dict[str
                 num_processes=int(sc.getConf().get("spark.executor.instances")),
                 local_mode=False,
                 use_gpu=config_dict["training_config"]["use_gpu"]
-            ).run(exp_fn, train_config, kafka_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
+            ).run(exp_fn, train_config, data_loader_config, use_gpu=config_dict["training_config"]["use_gpu"])
         elif args.experiment_type == "multiple":
             results = run_multiple_experiments(sc, train_config, 
-                                                kafka_config, data_loader_config, 
+                                                experiment_configs,
+                                                data_loader_config, 
                                                 iteration_count=args.iterations, 
                                                 use_gpu=config_dict["training_config"]["use_gpu"])
             print_statistical_analysis(results)

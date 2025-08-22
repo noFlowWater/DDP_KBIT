@@ -56,7 +56,6 @@ from ddp_kbit.data.loaders import create_dataloaders
 
 def main_fn(
     training_config: Dict[str, Any],
-    kafka_config: Dict[str, Any],
     data_loader_config: Dict[str, Any],
     use_gpu: bool = True
 ) -> Dict[str, Dict[str, List]]:

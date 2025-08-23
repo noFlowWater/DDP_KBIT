@@ -433,7 +433,7 @@ def compute_top_k_accuracy(predictions: torch.Tensor, targets: torch.Tensor, k: 
     return accuracy
 
 
-def debug_dataloader(dataloader, rank: int = 0) -> None:
+def debug_dataloader(dataloader) -> None:
     """
     Debug utility to inspect dataloader properties and first batch.
     
@@ -442,10 +442,9 @@ def debug_dataloader(dataloader, rank: int = 0) -> None:
     
     Args:
         dataloader: PyTorch DataLoader to inspect
-        rank (int): Process rank (only rank 0 prints to avoid duplication)
     
     Example:
-        >>> debug_dataloader(train_loader, rank=0)
+        >>> debug_dataloader(train_loader)
         Total number of samples in the dataset: 60000
         Batch index: 0
         Data shape: torch.Size([32, 1, 28, 28])
@@ -453,9 +452,6 @@ def debug_dataloader(dataloader, rank: int = 0) -> None:
         Target shape: torch.Size([32])
         Target type: torch.int64
     """
-    if rank != 0:
-        return
-    
     try:
         # Get total dataset size
         total_samples = len(dataloader.dataset)

@@ -300,15 +300,15 @@ def _debug_data_loaders(
 ) -> None:
     """Debug data loaders by printing information about their contents."""
     print(f"RANK[{rank}] Train Loader Debug:")
-    debug_dataloader(train_loader, rank)
+    debug_dataloader(train_loader)
     
     if val_loader is not None:
         print(f"RANK[{rank}] Validation Loader Debug:")
-        debug_dataloader(val_loader, rank)
+        debug_dataloader(val_loader)
     
     if test_loader is not None:
         print(f"RANK[{rank}] Test Loader Debug:")
-        debug_dataloader(test_loader, rank)
+        debug_dataloader(test_loader)
 
 
 def _setup_training_components(

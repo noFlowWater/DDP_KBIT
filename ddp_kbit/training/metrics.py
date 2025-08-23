@@ -297,7 +297,15 @@ class TrainingMetricsTracker:
                     
                     if latest is not None:
                         print(f"  {metric_name}:")
-                        print(f"    Latest: {latest:.4f}")
+                        # Handle both scalar values and numpy arrays
+                        if isinstance(latest, np.ndarray):
+                            if latest.size == 1:
+                                print(f"    Latest: {latest.item():.4f}")
+                            else:
+                                print(f"    Latest: {np.mean(latest):.4f} (array mean)")
+                        else:
+                            print(f"    Latest: {latest:.4f}")
+                        
                         if best_val is not None:
                             print(f"    Best: {best_val:.4f} (Epoch {best_epoch})")
         

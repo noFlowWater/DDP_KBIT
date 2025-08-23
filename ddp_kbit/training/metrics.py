@@ -244,12 +244,25 @@ class TrainingMetricsTracker:
         if not history:
             return None, None
         
-        if mode == 'max':
-            best_idx = np.argmax(history)
-        else:
-            best_idx = np.argmin(history)
+        # Check if history contains scalar values or arrays
+        # For arrays (like per-class precision/recall), compute mean for comparison
+        scalar_history = []
+        for value in history:
+            if isinstance(value, np.ndarray):
+                # For multi-dimensional metrics, use mean
+                scalar_history.append(np.mean(value))
+            else:
+                scalar_history.append(value)
         
-        return history[best_idx], best_idx + 1
+        if not scalar_history:
+            return None, None
+        
+        if mode == 'max':
+            best_idx = np.argmax(scalar_history)
+        else:
+            best_idx = np.argmin(scalar_history)
+        
+        return scalar_history[best_idx], best_idx + 1
     
     def print_summary(self, rank: int = 0) -> None:
         """

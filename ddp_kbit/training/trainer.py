@@ -139,11 +139,10 @@ def main_fn(
     # Initialize performance profiler and metrics tracker
     profiler = PerformanceProfiler()
     metrics_tracker = TrainingMetricsTracker()
-    metrics_tracker.start_training()
+    
     
     # Start data loading
     profiler.start_timer('data_loading')
-    start_time = time.time()
     
     print(f"RANK[{init_config['global_rank']}] DataLoader Config: {data_loader_config}")
     
@@ -155,7 +154,6 @@ def main_fn(
         cleanup_distributed_training()
         raise ValueError(f"Failed to load data: {e}")
     
-    end_time = time.time()
     data_load_time = profiler.end_timer('data_loading')
     print(f'Finished Data Loading. Total time: {data_load_time:.2f} seconds')
     
@@ -183,6 +181,9 @@ def main_fn(
         trainer, evaluator, tester, val_loader, test_loader, 
         results, metrics_tracker, init_config, training_config
     )
+
+    # Start training metrics tracking
+    metrics_tracker.start_training()
     
     # Execute training
     try:
